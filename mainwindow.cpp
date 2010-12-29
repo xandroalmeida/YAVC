@@ -3,6 +3,7 @@
 #include "optionsdialog.h"
 #include "aboutdialog.h"
 #include <QFileDialog>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -31,5 +32,12 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionAdd_Movie_triggered()
 {
     QFileDialog fileDlg;
-    fileDlg.exec();
+    fileDlg.setFileMode(QFileDialog::ExistingFile);
+    fileDlg.setNameFilter(tr("Movies (*.mov)"));
+    if (fileDlg.exec()) {
+        QTableWidgetItem* item = new QTableWidgetItem("ola");
+        int row = ui->tblMovies->rowCount()+1;
+        ui->tblMovies->setItem(row, 0, item);
+
+    }
 }

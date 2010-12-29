@@ -22,10 +22,9 @@ void OptionsDialog::on_sldQuality_valueChanged(int value)
 void OptionsDialog::on_pushButton_clicked()
 {
     QFileDialog fileDlg;
-    fileDlg.setFileMode(QFileDialog::DirectoryOnly);
-    fileDlg.setAcceptMode(QFileDialog::);
+    fileDlg.setOption(QFileDialog::ShowDirsOnly, true);
     if (fileDlg.exec())
     {
-        fileDlg.selectedFiles().at(0);
+        ui->edtOutputFolder->setText(fileDlg.selectedFiles().at(0));
     }
 }
