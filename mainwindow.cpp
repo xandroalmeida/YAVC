@@ -2,8 +2,12 @@
 #include "ui_mainwindow.h"
 #include "optionsdialog.h"
 #include "aboutdialog.h"
+#include "movieinfo.h"
+
 #include <QFileDialog>
 #include <QDebug>
+
+static QListWidgetItem* selectedItem;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -32,12 +36,29 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_actionAdd_Movie_triggered()
 {
     QFileDialog fileDlg;
-    fileDlg.setFileMode(QFileDialog::ExistingFile);
-    fileDlg.setNameFilter(tr("Movies (*.mov)"));
+    fileDlg.setFileMode(QFileDialog::ExistingFiles);
+    fileDlg.setNameFilter(tr("Movies (*.mov *.*)"));
     if (fileDlg.exec()) {
-        QTableWidgetItem* item = new QTableWidgetItem("ola");
-        int row = ui->tblMovies->rowCount()+1;
-        ui->tblMovies->setItem(row, 0, item);
+        for (int i = 0; i < fileDlg.selectedFiles().length(); i++) {
+            ui->tblMovies->addItem(fileDlg.selectedFiles()[i]);
+        }
+    }
+}
 
+void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
+{
+    selectedItem = item;
+    ui->txtMovieInfo->setPlainText(MovieInfo::get(item->text()).info());
+    ui->btnRemove->setEnabled(true);
+    qDebug() << item->text();
+}
+
+void MainWindow::on_btnRemove_clicked()
+{
+    if (selectedItem) {
+        ui->tblMovies->removeItemWidget(selectedItem);
+        delete selectedItem;
+        selectedItem = 0;
+        ui->btnRemove->setEnabled(false);
     }
 }

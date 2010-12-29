@@ -1,9 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="addMovie">Video.png</file>
-        <file>Video 1.png</file>
-        <file>Folder Options.png</file>
-        <file>about Blue.png</file>
-        <file>beer 48.png</file>
+        <file>icons/about Blue.png</file>
+        <file>icons/beer 48.png</file>
+        <file>icons/Folder Options.png</file>
+        <file>icons/Video 1.png</file>
+        <file>icons/Video.png</file>
     </qresource>
 </RCC>

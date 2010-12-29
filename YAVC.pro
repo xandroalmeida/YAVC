@@ -13,11 +13,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     optionsdialog.cpp \
-    aboutdialog.cpp
+    aboutdialog.cpp \
+    movieinfo.cpp
 
 HEADERS  += mainwindow.h \
     optionsdialog.h \
-    aboutdialog.h
+    aboutdialog.h \
+    movieinfo.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui \
