@@ -18,8 +18,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void setUiToConvertingVideo(bool enable);
 
 private slots:
+    void on_actionStop_Convert_triggered();
+    void on_actionConvert_Movies_triggered();
     void on_cbQuality_currentIndexChanged(QString );
     void on_btnRemove_clicked();
     void on_tblMovies_itemClicked(QListWidgetItem* item);

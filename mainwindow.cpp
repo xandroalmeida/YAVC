@@ -29,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    if (selectedItem)
+        delete selectedItem;
 }
 
 void MainWindow::on_actionOptions_triggered()
@@ -50,9 +52,14 @@ void MainWindow::on_actionAdd_Movie_triggered()
     fileDlg.setNameFilter(tr("Movies (*.mov *.*)"));
     if (fileDlg.exec()) {
         for (int i = 0; i < fileDlg.selectedFiles().length(); i++) {
+            QListWidgetItem item;
+            item.setText(fileDlg.selectedFiles()[i]);
             ui->tblMovies->addItem(fileDlg.selectedFiles()[i]);
         }
     }
+    if (ui->tblMovies->count() > 0)
+        ui->actionConvert_Movies->setEnabled(true);
+
 }
 
 void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
@@ -75,10 +82,38 @@ void MainWindow::on_btnRemove_clicked()
         ui->cbQuality->setCurrentIndex(-1);
         ui->cbQuality->setEnabled(false);
         ui->txtMovieInfo->setPlainText("");
+        if (ui->tblMovies->count() < 1)
+            ui->actionConvert_Movies->setEnabled(false);
     }
 }
 
 void MainWindow::on_cbQuality_currentIndexChanged(QString str)
 {
     qDebug() << str;
+}
+
+void MainWindow::setUiToConvertingVideo(bool enable)
+{
+    ui->actionStop_Convert->setEnabled(enable);
+
+    ui->actionConvert_Movies->setEnabled(!enable);
+    ui->actionAdd_Movie->setEnabled(!enable);
+    ui->actionOptions->setEnabled(!enable);
+
+}
+
+void MainWindow::on_actionConvert_Movies_triggered()
+{
+    setUiToConvertingVideo(true);
+    for (int i = 0; i < ui->tblMovies->count(); i++) {
+        QListWidgetItem* item = ui->tblMovies->itemAt(i,0);
+        qDebug() << "Converting" << item->text();
+
+    }
+}
+
+void MainWindow::on_actionStop_Convert_triggered()
+{
+    setUiToConvertingVideo(false);
+
 }

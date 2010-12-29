@@ -9,8 +9,13 @@ MovieInfo::MovieInfo(const QString & fileName)
     proc.start(prg, args, QProcess::ReadOnly);
     proc.waitForStarted();
     proc.waitForFinished();
-    this->infoText = proc.readAllStandardError();
+    QString txt = proc.readAllStandardError();
 
+    int idx = -1;
+    if ((idx = txt.indexOf("Input #0")) > 0) {
+        txt = txt.mid(idx);
+    }
+    this->infoText = txt;
 }
 
 MovieInfo MovieInfo::get(const QString & fileName)

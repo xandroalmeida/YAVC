@@ -14,11 +14,6 @@ OptionsDialog::~OptionsDialog()
     delete ui;
 }
 
-void OptionsDialog::on_sldQuality_valueChanged(int value)
-{
-    this->ui->lblQualityName->setText(QString::number(value));
-}
-
 void OptionsDialog::on_pushButton_clicked()
 {
     QFileDialog fileDlg;

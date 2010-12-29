@@ -20,7 +20,6 @@ private:
 
 private slots:
     void on_pushButton_clicked();
-    void on_sldQuality_valueChanged(int value);
 };
 
 #endif // OPTIONSDIALOG_H
