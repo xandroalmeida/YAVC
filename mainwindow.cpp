@@ -3,9 +3,13 @@
 #include "optionsdialog.h"
 #include "aboutdialog.h"
 #include "movieinfo.h"
+#include "videoprofile.h"
+
 
 #include <QFileDialog>
+#include <QList>
 #include <QDebug>
+#include <QVariant>
 
 static QListWidgetItem* selectedItem;
 
@@ -14,6 +18,12 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    ui->cbQuality->addItem("");
+    QList<VideoProfile> profiles = VideoProfile::getList();
+    for (int i = 0; i < profiles.size(); i++) {
+        ui->cbQuality->addItem(profiles.at(i).name());
+    }
 }
 
 MainWindow::~MainWindow()
@@ -50,6 +60,8 @@ void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
     selectedItem = item;
     ui->txtMovieInfo->setPlainText(MovieInfo::get(item->text()).info());
     ui->btnRemove->setEnabled(true);
+    ui->cbQuality->setEnabled(true);
+
     qDebug() << item->text();
 }
 
@@ -60,5 +72,13 @@ void MainWindow::on_btnRemove_clicked()
         delete selectedItem;
         selectedItem = 0;
         ui->btnRemove->setEnabled(false);
+        ui->cbQuality->setCurrentIndex(-1);
+        ui->cbQuality->setEnabled(false);
+        ui->txtMovieInfo->setPlainText("");
     }
+}
+
+void MainWindow::on_cbQuality_currentIndexChanged(QString str)
+{
+    qDebug() << str;
 }

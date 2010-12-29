@@ -20,6 +20,7 @@ private:
     Ui::MainWindow *ui;
 
 private slots:
+    void on_cbQuality_currentIndexChanged(QString );
     void on_btnRemove_clicked();
     void on_tblMovies_itemClicked(QListWidgetItem* item);
     void on_actionAdd_Movie_triggered();

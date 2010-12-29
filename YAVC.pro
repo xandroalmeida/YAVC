@@ -14,12 +14,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     optionsdialog.cpp \
     aboutdialog.cpp \
-    movieinfo.cpp
+    movieinfo.cpp \
+    videoprofile.cpp
 
 HEADERS  += mainwindow.h \
     optionsdialog.h \
     aboutdialog.h \
-    movieinfo.h
+    movieinfo.h \
+    videoprofile.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui \

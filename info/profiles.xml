@@ -1,0 +1,19 @@
+<profiles>
+	<profile>
+		<name>High Definition</name>
+		<options>-help</options>		
+	</profile>
+	<profile>
+		<name>Low Definition</name>
+		<options>-help</options>		
+	</profile>
+	<profile>
+		<name>oPhone/iPod</name>
+		<options>-help</options>		
+	</profile>
+	<profile>
+		<name>youtube</name>
+		<options>-help</options>		
+	</profile>
+	
+</profiles>

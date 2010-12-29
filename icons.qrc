@@ -5,5 +5,7 @@
         <file>icons/Folder Options.png</file>
         <file>icons/Video 1.png</file>
         <file>icons/Video.png</file>
+        <file>info/about.html</file>
+        <file>info/profiles.xml</file>
     </qresource>
 </RCC>

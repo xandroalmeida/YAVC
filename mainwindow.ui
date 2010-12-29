@@ -107,7 +107,11 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="cbQuality"/>
+           <widget class="QComboBox" name="cbQuality">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
           </item>
           <item>
            <spacer name="verticalSpacer">
