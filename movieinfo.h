@@ -7,10 +7,12 @@ class MovieInfo
 private:
     MovieInfo(const QString & fileName);
     QString infoText;
+    int m_duration;
 
 public:
     static MovieInfo get(const QString & fileName);
     QString info();
+    int duration();
 
 };
 

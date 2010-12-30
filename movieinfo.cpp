@@ -1,5 +1,7 @@
 #include "movieinfo.h"
 #include <QProcess>
+#include <QRegExp>
+#include <QDebug>
 
 MovieInfo::MovieInfo(const QString & fileName)
 {
@@ -16,6 +18,17 @@ MovieInfo::MovieInfo(const QString & fileName)
         txt = txt.mid(idx);
     }
     this->infoText = txt;
+    QRegExp re("Duration:\\s([^,]*)");
+    if (re.indexIn(txt) > 0) {
+        QStringList fields = re.cap(1).split(":");
+        if (fields.size() == 3) {
+            qDebug() << fields;
+            this->m_duration = fields.at(2).toInt();
+            this->m_duration += fields.at(1).toInt() * 60;
+            this->m_duration += fields.at(0).toInt() * 60 * 60;
+            qDebug() << m_duration;
+        }
+    }
 }
 
 MovieInfo MovieInfo::get(const QString & fileName)
@@ -27,4 +40,8 @@ MovieInfo MovieInfo::get(const QString & fileName)
 QString MovieInfo::info()
 {
     return this->infoText;
+}
+
+int MovieInfo::duration() {
+    return this->m_duration;
 }
