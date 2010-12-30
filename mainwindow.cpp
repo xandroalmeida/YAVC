@@ -5,6 +5,7 @@
 #include "movieinfo.h"
 #include "videoprofile.h"
 #include "settings.h"
+#include "movieconvertthread.h"
 
 #include <QFileDialog>
 #include <QList>
@@ -101,31 +102,23 @@ void MainWindow::setUiToConvertingVideo(bool enable)
     ui->actionAdd_Movie->setEnabled(!enable);
     ui->actionOptions->setEnabled(!enable);
     ui->cbQuality->setEnabled(!enable);
-
+    ui->txtOutpuFolder->setEnabled(!enable);
+    ui->btnSelectOutputFolder->setEnabled(!enable);
+    ui->tblMovies->setEnabled(!enable);
+    ui->btnRemove->setEnabled(!enable);
 }
 
 void MainWindow::on_actionConvert_Movies_triggered()
 {
     setUiToConvertingVideo(true);
+    QStringList sources;
     for (int i = 0; i < ui->tblMovies->count(); i++) {
         QListWidgetItem* item = ui->tblMovies->itemAt(i,0);
-        QString fin = item->text();
-        QString fout = fin + ".mp4";
-        qDebug() << "Converting" << fin << "to" << fout;
-        QProcess proc;
-        QString prg = "C:\\MinGW\\msys\\1.0\\home\\saoadalm\\ffmpeg-0.6.1\\ffmpeg.exe";
-        QStringList args = QStringList() << "-y" << "-i " + fin << fout ;
-        qDebug() << args;
-        proc.start(prg, args, QProcess::ReadOnly);
-        proc.waitForStarted();
-        while (proc.state() == QProcess::Running) {
-            qDebug() << "rodando";
-            proc.waitForReadyRead();
-            qDebug() << proc.readAllStandardError();
-        }
+        sources << item->text();
     }
-
-    setUiToConvertingVideo(false);
+    this->movieConvertThread = new MovieConvertThread(sources);
+    connect(this->movieConvertThread,SIGNAL(finished()),this,SLOT(on_movieConverterThread_finished()));
+    movieConvertThread->start();
 }
 
 void MainWindow::on_actionStop_Convert_triggered()
@@ -151,3 +144,13 @@ void MainWindow::on_txtOutpuFolder_editingFinished()
     AppSettings::setOutputFolder(ui->txtOutpuFolder->text());
 }
 
+
+
+void MainWindow::on_movieConverterThread_finished()
+{
+    qDebug() << "on_movieConverterThread_finished";
+    this->movieConvertThread->disconnect(this);
+    delete this->movieConvertThread;
+    this->movieConvertThread = NULL;
+    setUiToConvertingVideo(false);
+}

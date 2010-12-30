@@ -16,14 +16,16 @@ SOURCES += main.cpp\
     aboutdialog.cpp \
     movieinfo.cpp \
     videoprofile.cpp \
-    settings.cpp
+    settings.cpp \
+    movieconvertthread.cpp
 
 HEADERS  += mainwindow.h \
     optionsdialog.h \
     aboutdialog.h \
     movieinfo.h \
     videoprofile.h \
-    settings.h
+    settings.h \
+    movieconvertthread.h
 
 FORMS    += mainwindow.ui \
     optionsdialog.ui \

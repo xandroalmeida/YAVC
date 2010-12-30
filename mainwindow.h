@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "movieconvertthread.h"
 #include <QMainWindow>
 #include <QListWidgetItem>
 
@@ -19,6 +20,7 @@ public:
 private:
     Ui::MainWindow *ui;
     void setUiToConvertingVideo(bool enable);
+    MovieConvertThread* movieConvertThread;
 
 private slots:
     void on_txtOutpuFolder_editingFinished();
@@ -31,6 +33,7 @@ private slots:
     void on_actionAdd_Movie_triggered();
     void on_actionAbout_triggered();
     void on_actionOptions_triggered();
+    void on_movieConverterThread_finished();
 };
 
 #endif // MAINWINDOW_H
