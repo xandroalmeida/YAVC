@@ -21,6 +21,8 @@ private:
     Ui::MainWindow *ui;
     void setUiToConvertingVideo(bool enable);
     MovieConvertThread* movieConvertThread;
+protected:
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void on_txtOutpuFolder_editingFinished();

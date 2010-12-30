@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     }
     ui->txtOutpuFolder->setText(AppSettings::outputFolder());
     ui->progressBar->hide();
+    this->movieConvertThread = NULL;
 }
 
 MainWindow::~MainWindow()
@@ -72,8 +73,6 @@ void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
     selectedItem = item;
     ui->txtMovieInfo->setPlainText(MovieInfo::get(item->text()).info());
     ui->btnRemove->setEnabled(true);
-
-    qDebug() << item->text();
 }
 
 void MainWindow::on_btnRemove_clicked()
@@ -129,7 +128,7 @@ void MainWindow::on_actionConvert_Movies_triggered()
             ,SIGNAL(progress(int))
             ,ui->progressBar
             ,SLOT(setValue(int)));
-
+    ui->progressBar->setValue(0);
     movieConvertThread->start();
 }
 
@@ -166,3 +165,14 @@ void MainWindow::on_movieConverterThread_finished()
     this->movieConvertThread = NULL;
     setUiToConvertingVideo(false);
 }
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (this->movieConvertThread != NULL) {
+        this->movieConvertThread->stopWhenYouCan();
+        event->ignore();
+    } else {
+        event->accept();
+    }
+}
+

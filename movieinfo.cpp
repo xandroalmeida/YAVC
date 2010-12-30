@@ -5,11 +5,14 @@
 
 MovieInfo::MovieInfo(const QString & fileName)
 {
-    QString prg("C:\\MinGW\\msys\\1.0\\home\\saoadalm\\ffmpeg-0.6.1\\ffprobe.exe");
+    QString prg("C:\\MinGW\\msys\\1.0\\home\\Alexandro\\ffmpeg-0.6.1\\ffprobe.exe");
     QStringList args = QStringList() << fileName;
     QProcess proc;
     proc.start(prg, args, QProcess::ReadOnly);
-    proc.waitForStarted();
+    if(!proc.waitForStarted()) {
+        this->infoText = "Err";
+        return;
+    }
     proc.waitForFinished();
     QString txt = proc.readAllStandardError();
 
@@ -22,11 +25,9 @@ MovieInfo::MovieInfo(const QString & fileName)
     if (re.indexIn(txt) > 0) {
         QStringList fields = re.cap(1).split(":");
         if (fields.size() == 3) {
-            qDebug() << fields;
-            this->m_duration = fields.at(2).toInt();
+            this->m_duration = fields.at(2).toFloat();
             this->m_duration += fields.at(1).toInt() * 60;
             this->m_duration += fields.at(0).toInt() * 60 * 60;
-            qDebug() << m_duration;
         }
     }
 }
