@@ -1,18 +1,22 @@
 <profiles>
 	<profile>
-		<name>High Definition</name>
+		<name>To watch Full HD TV</name>
 		<options>-help</options>		
 	</profile>
 	<profile>
-		<name>Low Definition</name>
+		<name>To watch HD TV</name>
 		<options>-help</options>		
 	</profile>
 	<profile>
-		<name>oPhone/iPod</name>
+		<name>To watch DVD</name>
 		<options>-help</options>		
 	</profile>
 	<profile>
-		<name>youtube</name>
+		<name>To watch iPhone/iPod Touch</name>
+		<options>-help</options>		
+	</profile>
+	<profile>
+		<name>To upload to Youtube</name>
 		<options>-help</options>		
 	</profile>
 	

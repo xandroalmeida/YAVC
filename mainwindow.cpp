@@ -19,7 +19,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->cbQuality->addItem("");
     QList<VideoProfile> profiles = VideoProfile::getList();
     for (int i = 0; i < profiles.size(); i++) {
         ui->cbQuality->addItem(profiles.at(i).name());
@@ -67,7 +66,6 @@ void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
     selectedItem = item;
     ui->txtMovieInfo->setPlainText(MovieInfo::get(item->text()).info());
     ui->btnRemove->setEnabled(true);
-    ui->cbQuality->setEnabled(true);
 
     qDebug() << item->text();
 }
@@ -79,8 +77,6 @@ void MainWindow::on_btnRemove_clicked()
         delete selectedItem;
         selectedItem = 0;
         ui->btnRemove->setEnabled(false);
-        ui->cbQuality->setCurrentIndex(-1);
-        ui->cbQuality->setEnabled(false);
         ui->txtMovieInfo->setPlainText("");
         if (ui->tblMovies->count() < 1)
             ui->actionConvert_Movies->setEnabled(false);
@@ -99,6 +95,7 @@ void MainWindow::setUiToConvertingVideo(bool enable)
     ui->actionConvert_Movies->setEnabled(!enable);
     ui->actionAdd_Movie->setEnabled(!enable);
     ui->actionOptions->setEnabled(!enable);
+    ui->cbQuality->setEnabled(!enable);
 
 }
 
