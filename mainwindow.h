@@ -21,6 +21,8 @@ private:
     void setUiToConvertingVideo(bool enable);
 
 private slots:
+    void on_txtOutpuFolder_editingFinished();
+    void on_btnSelectOutputFolder_clicked();
     void on_actionStop_Convert_triggered();
     void on_actionConvert_Movies_triggered();
     void on_cbQuality_currentIndexChanged(QString );

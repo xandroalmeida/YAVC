@@ -4,12 +4,13 @@
 #include "aboutdialog.h"
 #include "movieinfo.h"
 #include "videoprofile.h"
-
+#include "settings.h"
 
 #include <QFileDialog>
 #include <QList>
 #include <QDebug>
 #include <QVariant>
+#include <QProcess>
 
 static QListWidgetItem* selectedItem;
 
@@ -23,6 +24,8 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i = 0; i < profiles.size(); i++) {
         ui->cbQuality->addItem(profiles.at(i).name());
     }
+
+    ui->txtOutpuFolder->setText(AppSettings::outputFolder());
 }
 
 MainWindow::~MainWindow()
@@ -49,7 +52,9 @@ void MainWindow::on_actionAdd_Movie_triggered()
     QFileDialog fileDlg;
     fileDlg.setFileMode(QFileDialog::ExistingFiles);
     fileDlg.setNameFilter(tr("Movies (*.mov *.*)"));
+    fileDlg.setDirectory(AppSettings::defaultInputFolder());
     if (fileDlg.exec()) {
+        AppSettings::setDefaultInputFolder(QFileInfo(fileDlg.selectedFiles()[0]).absoluteDir().absolutePath());
         for (int i = 0; i < fileDlg.selectedFiles().length(); i++) {
             QListWidgetItem item;
             item.setText(fileDlg.selectedFiles()[i]);
@@ -104,13 +109,45 @@ void MainWindow::on_actionConvert_Movies_triggered()
     setUiToConvertingVideo(true);
     for (int i = 0; i < ui->tblMovies->count(); i++) {
         QListWidgetItem* item = ui->tblMovies->itemAt(i,0);
-        qDebug() << "Converting" << item->text();
-
+        QString fin = item->text();
+        QString fout = fin + ".mp4";
+        qDebug() << "Converting" << fin << "to" << fout;
+        QProcess proc;
+        QString prg = "C:\\MinGW\\msys\\1.0\\home\\saoadalm\\ffmpeg-0.6.1\\ffmpeg.exe";
+        QStringList args = QStringList() << "-y" << "-i " + fin << fout ;
+        qDebug() << args;
+        proc.start(prg, args, QProcess::ReadOnly);
+        proc.waitForStarted();
+        while (proc.state() == QProcess::Running) {
+            qDebug() << "rodando";
+            proc.waitForReadyRead();
+            qDebug() << proc.readAllStandardError();
+        }
     }
+
+    setUiToConvertingVideo(false);
 }
 
 void MainWindow::on_actionStop_Convert_triggered()
 {
     setUiToConvertingVideo(false);
-
 }
+
+void MainWindow::on_btnSelectOutputFolder_clicked()
+{
+    QFileDialog fileDlg;
+    fileDlg.setOption(QFileDialog::ShowDirsOnly, true);
+    fileDlg.setFileMode(QFileDialog::DirectoryOnly);
+    fileDlg.setDirectory(ui->txtOutpuFolder->text());
+    if (fileDlg.exec())
+    {
+        ui->txtOutpuFolder->setText(fileDlg.selectedFiles().at(0));
+        AppSettings::setOutputFolder(ui->txtOutpuFolder->text());
+    }
+}
+
+void MainWindow::on_txtOutpuFolder_editingFinished()
+{
+    AppSettings::setOutputFolder(ui->txtOutpuFolder->text());
+}
+

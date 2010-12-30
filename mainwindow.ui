@@ -51,6 +51,27 @@
      </layout>
     </item>
     <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Output Folder</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="txtOutpuFolder"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="btnSelectOutputFolder">
+        <property name="text">
+         <string>Select</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QListWidget" name="tblMovies"/>
@@ -197,7 +218,6 @@
    <addaction name="actionAdd_Movie"/>
    <addaction name="actionConvert_Movies"/>
    <addaction name="actionStop_Convert"/>
-   <addaction name="actionOptions"/>
    <addaction name="actionAbout"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
@@ -232,9 +252,6 @@
    </property>
    <property name="text">
     <string>Options</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionAbout">
