@@ -123,7 +123,7 @@ void MainWindow::on_actionConvert_Movies_triggered()
 
 void MainWindow::on_actionStop_Convert_triggered()
 {
-    setUiToConvertingVideo(false);
+    this->movieConvertThread->stopWhenYouCan();
 }
 
 void MainWindow::on_btnSelectOutputFolder_clicked()
