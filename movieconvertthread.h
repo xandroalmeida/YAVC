@@ -17,6 +17,10 @@ public:
     MovieConvertThread(QStringList const &sources);
     virtual void run();
     void stopWhenYouCan();
+
+signals:
+    void progress(int newValue);
+
 };
 
 #endif // MOVIECONVERTTHREAD_H

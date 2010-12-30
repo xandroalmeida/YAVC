@@ -35,6 +35,7 @@ void MovieConvertThread::run() {
                 return;
             }
             qDebug() << proc.readAllStandardError() << c++;
+            emit progress(c*5);
         }
         qDebug() << "ffmpeg finished";
     }

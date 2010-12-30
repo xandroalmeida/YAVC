@@ -25,8 +25,8 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i = 0; i < profiles.size(); i++) {
         ui->cbQuality->addItem(profiles.at(i).name());
     }
-
     ui->txtOutpuFolder->setText(AppSettings::outputFolder());
+    ui->progressBar->hide();
 }
 
 MainWindow::~MainWindow()
@@ -106,6 +106,10 @@ void MainWindow::setUiToConvertingVideo(bool enable)
     ui->btnSelectOutputFolder->setEnabled(!enable);
     ui->tblMovies->setEnabled(!enable);
     ui->btnRemove->setEnabled(!enable);
+    if (enable)
+        ui->progressBar->show();
+    else
+        ui->progressBar->hide();
 }
 
 void MainWindow::on_actionConvert_Movies_triggered()
@@ -117,7 +121,15 @@ void MainWindow::on_actionConvert_Movies_triggered()
         sources << item->text();
     }
     this->movieConvertThread = new MovieConvertThread(sources);
-    connect(this->movieConvertThread,SIGNAL(finished()),this,SLOT(on_movieConverterThread_finished()));
+    connect(this->movieConvertThread
+            ,SIGNAL(finished())
+            ,this
+            ,SLOT(on_movieConverterThread_finished()));
+    connect(this->movieConvertThread
+            ,SIGNAL(progress(int))
+            ,ui->progressBar
+            ,SLOT(setValue(int)));
+
     movieConvertThread->start();
 }
 

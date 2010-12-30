@@ -11,6 +11,7 @@ private:
 public:
     static MovieInfo get(const QString & fileName);
     QString info();
+
 };
 
 #endif // MOVIEINFO_H
