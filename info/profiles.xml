@@ -13,7 +13,7 @@
 	</profile>
 	<profile>
 		<name>To watch DVD</name>
-		<options>-f dvd -target pal-dvd -aspect 16:9 -crf 25.0 -mbd rd -trellis -mv0 -cmp 0 -subcmp 2</options>	
+		<options>-f dvd -target pal-dvd -vb 1440k -ab 128k -aspect 4:3</options>	
 		<extension>mpg</extension>
 		<prefix>dvd-</prefix>
 	</profile>

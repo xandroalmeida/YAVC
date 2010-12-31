@@ -1,12 +1,20 @@
 #include "movieinfo.h"
+#include "settings.h"
+
 #include <QProcess>
 #include <QRegExp>
+#include <QDir>
 #include <QDebug>
 
-MovieInfo::MovieInfo(const QString & fileName)
+
+MovieInfo::MovieInfo(const QString & fileName):
+        m_bitrate(-1),
+        m_duration(-1),
+        m_height(-1),
+        m_width(-1)
 {
-    QString prg("C:\\MinGW\\msys\\1.0\\home\\Alexandro\\ffmpeg-0.6.1\\ffprobe.exe");
-    QStringList args = QStringList() << fileName;
+    QString prg = AppSettings::ffmpegFolder() + QDir::separator() + "ffmpeg.exe";
+    QStringList args = QStringList() << "-i" << fileName;
     QProcess proc;
     proc.start(prg, args, QProcess::ReadOnly);
     if(!proc.waitForStarted()) {
@@ -15,7 +23,6 @@ MovieInfo::MovieInfo(const QString & fileName)
     }
     proc.waitForFinished();
     QString txt = proc.readAllStandardError();
-
     int idx = -1;
     if ((idx = txt.indexOf("Input #0")) > 0) {
         txt = txt.mid(idx);
@@ -30,6 +37,18 @@ MovieInfo::MovieInfo(const QString & fileName)
             this->m_duration += fields.at(0).toInt() * 60 * 60;
         }
     }
+
+    re.setPattern("bitrate:\\s(\\d+)\\skb");
+    if (re.indexIn(txt) > 0) {
+        qDebug() <<re.cap(1);
+        this->m_bitrate = re.cap(1).toInt();
+    }
+
+    re.setPattern("(\\d+)x(\\d+)");
+    if (re.indexIn(txt) > 0) {
+        this->m_width = re.cap(1).toInt();
+        this->m_height = re.cap(2).toInt();
+    }
 }
 
 MovieInfo MovieInfo::get(const QString & fileName)
@@ -38,11 +57,27 @@ MovieInfo MovieInfo::get(const QString & fileName)
     return info;
 }
 
-QString MovieInfo::info()
+QString MovieInfo::info() const
 {
     return this->infoText;
 }
 
-int MovieInfo::duration() {
+int MovieInfo::duration() const
+{
     return this->m_duration;
+}
+
+int MovieInfo::bitrate() const
+{
+    return this->m_bitrate;
+}
+
+int MovieInfo::height() const
+{
+    return this->m_height;
+}
+
+int MovieInfo::width() const
+{
+    return this->m_width;
 }

@@ -19,16 +19,12 @@ static void lookupNumberOfCpu() {
 /* Hack win32 end */
 
 
-MovieConvertThread::MovieConvertThread(QStringList const &sources, QString const &profileName):
+MovieConvertThread::MovieConvertThread(QStringList const &sources, VideoProfile const &videoProfile):
     stopPlease(false)
 {
     lookupNumberOfCpu();
     this->m_sources = sources;
-    QList<VideoProfile> list = VideoProfile::getList();
-    for (int i = 0; i < list.size(); i++) {
-        if (list.at(i).name() == profileName)
-            this->m_videoProfile = list.at(i);
-    }
+    this->m_videoProfile = videoProfile;
 }
 
 void MovieConvertThread::stopWhenYouCan()

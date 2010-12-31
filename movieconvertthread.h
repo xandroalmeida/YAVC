@@ -17,7 +17,7 @@ private:
     VideoProfile m_videoProfile;
 
 public:
-    MovieConvertThread(QStringList const &sources, QString const &profileName);
+    MovieConvertThread(QStringList const &sources, VideoProfile const &videoProfile);
     virtual void run();
     void stopWhenYouCan();
 

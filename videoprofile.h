@@ -2,6 +2,7 @@
 #define VIDEOPROFILE_H
 #include <QList>
 #include <QString>
+#include <QMetaType>
 
 class VideoProfile
 {
@@ -21,4 +22,5 @@ public:
     QString prefix() const;
 };
 
+Q_DECLARE_METATYPE(VideoProfile)
 #endif // VIDEOPROFILE_H
