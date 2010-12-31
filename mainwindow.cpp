@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+
     QList<VideoProfile> profiles = VideoProfile::getList();
     for (int i = 0; i < profiles.size(); i++) {
         ui->cbQuality->addItem(profiles.at(i).name());
@@ -119,7 +120,7 @@ void MainWindow::on_actionConvert_Movies_triggered()
         QListWidgetItem* item = ui->tblMovies->itemAt(i,0);
         sources << item->text();
     }
-    this->movieConvertThread = new MovieConvertThread(sources);
+    this->movieConvertThread = new MovieConvertThread(sources, ui->cbQuality->currentText());
     connect(this->movieConvertThread
             ,SIGNAL(finished())
             ,this

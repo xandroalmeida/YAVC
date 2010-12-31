@@ -1,11 +1,34 @@
 #include "movieconvertthread.h"
 #include <QString>
 #include <QDebug>
+#include <QFileInfo>
+#include <QDir>
 
-MovieConvertThread::MovieConvertThread(QStringList const &sources):
+#include "settings.h"
+
+#include <windows.h>
+
+/* Hack win32 start */
+int static cpuCount = 0 ;
+
+static void lookupNumberOfCpu() {
+    SYSTEM_INFO si;
+    GetSystemInfo(&si);
+    cpuCount = si.dwNumberOfProcessors;
+}
+/* Hack win32 end */
+
+
+MovieConvertThread::MovieConvertThread(QStringList const &sources, QString const &profileName):
     stopPlease(false)
 {
+    lookupNumberOfCpu();
     this->m_sources = sources;
+    QList<VideoProfile> list = VideoProfile::getList();
+    for (int i = 0; i < list.size(); i++) {
+        if (list.at(i).name() == profileName)
+            this->m_videoProfile = list.at(i);
+    }
 }
 
 void MovieConvertThread::stopWhenYouCan()
@@ -16,16 +39,35 @@ void MovieConvertThread::stopWhenYouCan()
 void MovieConvertThread::run() {
     for (int i = 0; i < m_sources.size(); i++) {
         QString fin = m_sources.at(i);
-        QString fout = fin + ".mp4";
+        QString fout = fin;
+        int idx = -1;
+        if((idx = fout.lastIndexOf(".")) > -1) {
+            fout = fout.left(idx+1) + m_videoProfile.extension();
+        }
 
-        QString prg = "C:\\MinGW\\msys\\1.0\\home\\Alexandro\\ffmpeg-0.6.1\\ffmpeg.exe";
-        QStringList args = QStringList() << "-y" << "-i" << fin << fout ;
+        fout = AppSettings::outputFolder() + QDir::separator() + m_videoProfile.prefix() + QFileInfo(fout).fileName();
+
+        //qDebug() << fout;
+
+        QString prg = AppSettings::ffmpegFolder() + "\\ffmpeg.exe";
+        //qDebug() << prg;
+        QStringList args = QStringList() << "-y" << "-i" << fin;
+        args << m_videoProfile.options().split(" ");
+
+        //Lets go use all the cores!
+        if (cpuCount > 0)
+            args << "-threads" << QString::number(cpuCount);
+
+        args << fout;
         qDebug() << args;
+        qDebug() << fout;
 
         QProcess proc;
         proc.start(prg, args, QProcess::ReadOnly);
-        if (!proc.waitForStarted())
+        if (!proc.waitForStarted()) {
+            qDebug() << "Not started";
             return;
+        }
 
         int totalDuraction = -1;
         QRegExp re("time=(\\S*)");
@@ -37,7 +79,6 @@ void MovieConvertThread::run() {
             }
 
             QString log = proc.readAllStandardError();
-            qDebug() << log;
             if (totalDuraction > 0 && re.indexIn(log) > 0) {
                 float time = re.cap(1).toFloat();
                 time = (time/totalDuraction) * 100;
@@ -48,7 +89,6 @@ void MovieConvertThread::run() {
                 if (r1.indexIn(log) > 0) {
                     QStringList fields = r1.cap(1).split(":");
                     if (fields.size() == 3) {
-                        qDebug() << fields;
                         totalDuraction = fields.at(2).toFloat();
                         totalDuraction += fields.at(1).toInt() * 60;
                         totalDuraction += fields.at(0).toInt() * 60 * 60;
@@ -56,5 +96,7 @@ void MovieConvertThread::run() {
                 }
             }
         }
+
+        qDebug() << proc.readAllStandardError();
     }
 }

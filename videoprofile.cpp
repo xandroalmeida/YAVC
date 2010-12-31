@@ -20,6 +20,9 @@ QList<VideoProfile> VideoProfile::getList()
     QString currentTag;
     QString options;
     QString name;
+    QString extension;
+    QString prefix;
+
 
     while (!xml.atEnd()) {
         xml.readNext();
@@ -30,15 +33,24 @@ QList<VideoProfile> VideoProfile::getList()
                 VideoProfile v;
                 v.m_name = name;
                 v.m_options = options;
+                v.m_extension = extension;
+                v.m_prefix = prefix;
                 list << v;
+
                 name.clear();
                 options.clear();
+                extension.clear();
+                prefix.clear();
             }
         } else if (xml.isCharacters() && !xml.isWhitespace()) {
             if (currentTag == "options") {
                 options += xml.text().toString();
             } else if (currentTag == "name") {
                 name += xml.text().toString();
+            } else if (currentTag == "extension") {
+                extension += xml.text().toString();
+            } else if (currentTag == "prefix") {
+                prefix += xml.text().toString();
             }
         }
     }
@@ -57,4 +69,14 @@ QString VideoProfile::name() const
 QString VideoProfile::options() const
 {
     return this->m_options;
+}
+
+QString VideoProfile::extension() const
+{
+    return this->m_extension;
+}
+
+QString VideoProfile::prefix() const
+{
+    return this->m_prefix;
 }

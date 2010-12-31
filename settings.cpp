@@ -11,6 +11,16 @@ AppSettings::~AppSettings()
 }
 
 
+QString AppSettings::ffmpegFolder(){
+#ifdef QT_NO_DEBUG
+    QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows", QSettings::NativeFormat);
+    settings.beginGroup("CurrentVersion/Explorer/Shell Folders");
+    return settings.value("My Video").toString();
+#else
+    return "C:/Projetos/";
+#endif
+}
+
 QString AppSettings::outputFolder() {
     QSettings m_settings;
     QString ret = m_settings.value("outputfolder").value<QString>();

@@ -1,23 +1,33 @@
 <profiles>
 	<profile>
 		<name>To watch Full HD TV</name>
-		<options>-help</options>		
+		<options>-crf 15.0 -vcodec libx264 -acodec libfaac -ar 48000 -ab 192kb -coder 1 -flags +loop -cmp +chroma -partitions +parti4x4+partp8x8+partb8x8 -me_method hex -subq 6 -me_range 16 -g 250 -keyint_min 25 -sc_threshold 40 -i_qfactor 0.71 -b_strategy 1</options>
+		<extension>m4v</extension>
+		<prefix>Full-hd-</prefix>
 	</profile>
 	<profile>
 		<name>To watch HD TV</name>
-		<options>-help</options>		
+		<options>-crf 35.0 -vcodec libx264 -acodec libfaac -ar 48000 -ab 128kb -coder 1 -flags +loop -cmp +chroma -partitions +parti4x4+partp8x8+partb8x8 -me_method hex -subq 6 -me_range 16 -g 250 -keyint_min 25 -sc_threshold 40 -i_qfactor 0.71 -b_strategy 1</options>		
+		<extension>m4v</extension>
+		<prefix>hd-</prefix>
 	</profile>
 	<profile>
 		<name>To watch DVD</name>
-		<options>-help</options>		
+		<options>-f dvd -target pal-dvd -aspect 16:9 -b 8000kb -mbd rd -trellis -mv0 -cmp 0 -subcmp 2</options>	
+		<extension>mpg</extension>
+		<prefix>dvd-</prefix>
 	</profile>
 	<profile>
 		<name>To watch iPhone/iPod Touch</name>
-		<options>-help</options>		
+		<options>-r 29.97 -vcodec libx264 -flags +loop -cmp +chroma -deblockalpha 0 -deblockbeta 0 -crf 21 -bt 256k -refs 1 -coder 0 -me_method full -me_range 16 -subq 5 -partitions +parti4x4+parti8x8+partp8x8 -g 250 -keyint_min 25 -level 30 -trellis 2 -sc_threshold 40 -i_qfactor 0.71 -s 320x240 -aspect 4:3 -acodec libfaac -ab 112kb -ar 48000 -ac 2</options>		
+		<extension>m4v</extension>
+		<prefix>iphone-</prefix>
 	</profile>
 	<profile>
-		<name>To upload to Youtube</name>
-		<options>-help</options>		
+		<name>To watch Web</name>
+		<options>-vcodec flv -f flv -r 29.97 -s 320x240 -aspect 4:3 -b 300kb -g 160 -cmp dct -subcmp dct -mbd 2 -flags +aic+cbp+mv0+mv4 -trellis 1 -ac 1 -ar 22050 -ab 56kb</options>
+		<extension>flv</extension>
+		<prefix>web-</prefix>
 	</profile>
 	
 </profiles>

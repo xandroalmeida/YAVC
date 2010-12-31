@@ -1,6 +1,8 @@
 #ifndef MOVIECONVERTTHREAD_H
 #define MOVIECONVERTTHREAD_H
 
+#include "videoprofile.h"
+
 #include <QThread>
 #include <QStringList>
 #include <QProcess>
@@ -12,9 +14,10 @@ class MovieConvertThread : public QThread
 private:
     QStringList m_sources;
     bool stopPlease;    
+    VideoProfile m_videoProfile;
 
 public:
-    MovieConvertThread(QStringList const &sources);
+    MovieConvertThread(QStringList const &sources, QString const &profileName);
     virtual void run();
     void stopWhenYouCan();
 

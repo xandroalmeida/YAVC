@@ -11,6 +11,8 @@ private:
 public:
     ~AppSettings();
 
+    static QString ffmpegFolder();
+
     static QString outputFolder();
     static void setOutputFolder(const QString &value);
 
