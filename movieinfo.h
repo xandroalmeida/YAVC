@@ -1,16 +1,20 @@
 #ifndef MOVIEINFO_H
 #define MOVIEINFO_H
 #include <QString>
+#include <QMetaType>
 
 class MovieInfo
 {
-private:
+public:
     MovieInfo(const QString & fileName);
+    MovieInfo();
+private:
     QString infoText;
     int m_duration;
     int m_bitrate;
     int m_height;
     int m_width;
+    QString m_name;
 
 public:
     static MovieInfo get(const QString & fileName);
@@ -19,7 +23,8 @@ public:
     int bitrate() const;
     int height() const;
     int width() const;
-
+    QString name() const;
 };
 
+Q_DECLARE_METATYPE(MovieInfo)
 #endif // MOVIEINFO_H

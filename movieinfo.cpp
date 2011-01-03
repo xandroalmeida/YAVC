@@ -7,12 +7,22 @@
 #include <QDebug>
 
 
+MovieInfo::MovieInfo():
+        m_bitrate(-1),
+        m_duration(-1),
+        m_height(-1),
+        m_width(-1)
+{
+}
+
 MovieInfo::MovieInfo(const QString & fileName):
         m_bitrate(-1),
         m_duration(-1),
         m_height(-1),
         m_width(-1)
 {
+    this->m_name = QFileInfo(fileName).fileName();
+
     QString prg = AppSettings::ffmpegFolder() + QDir::separator() + "ffmpeg.exe";
     QStringList args = QStringList() << "-i" << fileName;
     QProcess proc;
@@ -80,4 +90,9 @@ int MovieInfo::height() const
 int MovieInfo::width() const
 {
     return this->m_width;
+}
+
+QString MovieInfo::name() const
+{
+    return this->m_name;
 }

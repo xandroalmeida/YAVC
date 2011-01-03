@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include "optionsdialog.h"
 #include "aboutdialog.h"
-#include "movieinfo.h"
 #include "videoprofile.h"
 #include "settings.h"
 #include "movieconvertthread.h"
@@ -12,15 +11,14 @@
 #include <QDebug>
 #include <QVariant>
 #include <QProcess>
-
-static QListWidgetItem* selectedItem;
+#include <QListWidgetItem>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    this->m_selectedItem = NULL;
 
     QList<VideoProfile> profiles = VideoProfile::getList();
     for (int i = 0; i < profiles.size(); i++) {
@@ -29,15 +27,16 @@ MainWindow::MainWindow(QWidget *parent) :
         ui->cbQuality->addItem(profiles.at(i).name(), data);
     }
     ui->txtOutpuFolder->setText(AppSettings::outputFolder());
-    ui->progressBar->hide();
+    ui->pbMovie->hide();
+    ui->pbTotal->hide();
     this->movieConvertThread = NULL;
+
+    this->ui->tblMovies->model();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-    if (selectedItem)
-        delete selectedItem;
 }
 
 void MainWindow::on_actionOptions_triggered()
@@ -63,30 +62,23 @@ void MainWindow::on_actionAdd_Movie_triggered()
         for (int i = 0; i < fileDlg.selectedFiles().length(); i++) {
             QListWidgetItem item;
             item.setText(fileDlg.selectedFiles()[i]);
-            ui->tblMovies->addItem(fileDlg.selectedFiles()[i]);
+            addMovie(fileDlg.selectedFiles()[i]);
         }
     }
-    if (ui->tblMovies->count() > 0)
+
+    if (hasMovieToConvert())
         ui->actionConvert_Movies->setEnabled(true);
 
 }
 
-void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
-{
-    selectedItem = item;
-    ui->txtMovieInfo->setPlainText(MovieInfo::get(item->text()).info());
-    ui->btnRemove->setEnabled(true);
-}
-
 void MainWindow::on_btnRemove_clicked()
 {
-    if (selectedItem) {
-        ui->tblMovies->removeItemWidget(selectedItem);
-        delete selectedItem;
-        selectedItem = 0;
+    if (m_selectedItem) {
+        removeselectedMovieMovie();
         ui->btnRemove->setEnabled(false);
         ui->txtMovieInfo->setPlainText("");
-        if (ui->tblMovies->count() < 1)
+
+        if (hasMovieToConvert())
             ui->actionConvert_Movies->setEnabled(false);
     }
 }
@@ -108,20 +100,25 @@ void MainWindow::setUiToConvertingVideo(bool enable)
     ui->btnSelectOutputFolder->setEnabled(!enable);
     ui->tblMovies->setEnabled(!enable);
     ui->btnRemove->setEnabled(!enable);
-    if (enable)
-        ui->progressBar->show();
-    else
-        ui->progressBar->hide();
+    if (enable) {
+        ui->pbMovie->show();
+        ui->pbTotal->show();
+    } else {
+        ui->pbMovie->hide();
+        ui->pbTotal->hide();
+    }
 }
 
 void MainWindow::on_actionConvert_Movies_triggered()
 {
     setUiToConvertingVideo(true);
     QStringList sources;
+
     for (int i = 0; i < ui->tblMovies->count(); i++) {
         QListWidgetItem* item = ui->tblMovies->itemAt(i,0);
         sources << item->text();
     }
+
     int idx = ui->cbQuality->currentIndex();
     VideoProfile data = ui->cbQuality->itemData(idx).value<VideoProfile>();
     this->movieConvertThread = new MovieConvertThread(sources, data);
@@ -131,9 +128,9 @@ void MainWindow::on_actionConvert_Movies_triggered()
             ,SLOT(on_movieConverterThread_finished()));
     connect(this->movieConvertThread
             ,SIGNAL(progress(int))
-            ,ui->progressBar
+            ,ui->pbMovie
             ,SLOT(setValue(int)));
-    ui->progressBar->setValue(0);
+    ui->pbMovie->setValue(0);
     movieConvertThread->start();
 }
 
@@ -181,3 +178,35 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
+void MainWindow::addMovie(QString const &fileName)
+{
+    qDebug() << "addMovie" << fileName;
+    MovieInfo movieInfo = MovieInfo::get(fileName);
+    QVariant data;
+    data.setValue(movieInfo);
+
+    QListWidgetItem* item = new QListWidgetItem(fileName);
+    item->setData(Qt::UserRole, data);
+    ui->tblMovies->addItem(item);
+}
+
+bool MainWindow::hasMovieToConvert()
+{
+    return ui->tblMovies->count() > 0;
+}
+
+void MainWindow::removeselectedMovieMovie()
+{
+    if (m_selectedItem) {
+        ui->tblMovies->removeItemWidget(m_selectedItem);
+        delete m_selectedItem;
+        m_selectedItem = NULL;
+    }
+}
+
+void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
+{
+    ui->txtMovieInfo->setPlainText(item->data(Qt::UserRole).value<MovieInfo>().info());
+    ui->btnRemove->setEnabled(true);
+    m_selectedItem = item;
+}
