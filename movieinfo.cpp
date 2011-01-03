@@ -6,11 +6,7 @@
 #include <QDir>
 #include <QDebug>
 
-MovieInfo::MovieInfo():
-        m_bitrate(-1),
-        m_duration(-1),
-        m_height(-1),
-        m_width(-1)
+MovieInfo::MovieInfo()
 {
 }
 
