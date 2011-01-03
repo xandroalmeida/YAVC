@@ -98,7 +98,6 @@ void MainWindow::setUiToConvertingVideo(bool enable)
     ui->cbQuality->setEnabled(!enable);
     ui->txtOutpuFolder->setEnabled(!enable);
     ui->btnSelectOutputFolder->setEnabled(!enable);
-    ui->tblMovies->setEnabled(!enable);
     ui->btnRemove->setEnabled(!enable);
     if (enable) {
         ui->pbMovie->show();
@@ -182,10 +181,21 @@ void MainWindow::on_movieConverterThread_finished()
 
 void MainWindow::on_movieConverterThread_startConvert(MovieInfo const & movieInfo) {
     ui->statusBar->showMessage("Converting " + movieInfo.name());
+    QListWidgetItem* item = getListItem(movieInfo);
+    if (item) {
+        item->setForeground(QBrush(Qt::blue,Qt::SolidPattern));
+    }
 }
 
 void MainWindow::on_movieConverterThread_finishedConvert(MovieInfo const & movieInfo, bool ok) {
     ui->statusBar->clearMessage();
+    QListWidgetItem* item = getListItem(movieInfo);
+    if (item) {
+        if (ok)
+            item->setForeground(QBrush(Qt::green,Qt::SolidPattern));
+        else
+            item->setForeground(QBrush(Qt::red,Qt::SolidPattern));
+    }
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -200,11 +210,12 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::addMovie(QString const &fileName)
 {
-    MovieInfo movieInfo = MovieInfo::get(fileName);
+    QListWidgetItem* item = new QListWidgetItem(fileName);
+
+    MovieInfo movieInfo(fileName);
     QVariant data;
     data.setValue(movieInfo);
 
-    QListWidgetItem* item = new QListWidgetItem(fileName);
     item->setData(Qt::UserRole, data);
     ui->tblMovies->addItem(item);
 }
@@ -226,6 +237,20 @@ void MainWindow::removeselectedMovieMovie()
 void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
 {
     ui->txtMovieInfo->setPlainText(item->data(Qt::UserRole).value<MovieInfo>().info());
-    ui->btnRemove->setEnabled(true);
+    if (!movieConvertThread)
+        ui->btnRemove->setEnabled(true);
+
     m_selectedItem = item;
+}
+
+QListWidgetItem* MainWindow::getListItem(MovieInfo const &movieInfo)
+{
+    for (int i = 0; i < ui->tblMovies->count(); i++) {
+        QListWidgetItem* item = ui->tblMovies->item(i);
+        if (movieInfo.fileName() == item->data(Qt::UserRole).value<MovieInfo>().fileName()) {
+            return item;
+        }
+    }
+
+    return NULL;
 }

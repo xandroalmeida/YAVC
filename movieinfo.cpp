@@ -6,7 +6,6 @@
 #include <QDir>
 #include <QDebug>
 
-
 MovieInfo::MovieInfo():
         m_bitrate(-1),
         m_duration(-1),
@@ -15,11 +14,7 @@ MovieInfo::MovieInfo():
 {
 }
 
-MovieInfo::MovieInfo(const QString & fileName):
-        m_bitrate(-1),
-        m_duration(-1),
-        m_height(-1),
-        m_width(-1)
+MovieInfo::MovieInfo(const QString & fileName)
 {
     this->m_name = QFileInfo(fileName).fileName();
     this->m_fileName = fileName;
@@ -61,12 +56,6 @@ MovieInfo::MovieInfo(const QString & fileName):
     }
 }
 
-MovieInfo MovieInfo::get(const QString & fileName)
-{
-    MovieInfo info(fileName);
-    return info;
-}
-
 QString MovieInfo::info() const
 {
     return this->infoText;
@@ -97,7 +86,7 @@ QString MovieInfo::name() const
     return this->m_name;
 }
 
-QString MovieInfo::fineName() const
+QString MovieInfo::fileName() const
 {
     return this->m_fileName;
 }

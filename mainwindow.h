@@ -28,6 +28,8 @@ private:
     bool hasMovieToConvert();
     QListWidgetItem *m_selectedItem;
     void removeselectedMovieMovie();
+    QListWidgetItem* getListItem(MovieInfo const &movieInfo);
+
 
 protected:
     void closeEvent(QCloseEvent *event);

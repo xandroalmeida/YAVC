@@ -45,7 +45,7 @@ void MovieConvertThread::run() {
 
     for (int i = 0; i < m_movies.size(); i++) {
         emit(startConvert(m_movies.at(i)));
-        QString fin = m_movies.at(i).fineName();
+        QString fin = m_movies.at(i).fileName();
         QString fout = fin;
         int idx = -1;
         if((idx = fout.lastIndexOf(".")) > -1) {

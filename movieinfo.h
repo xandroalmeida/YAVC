@@ -2,6 +2,7 @@
 #define MOVIEINFO_H
 #include <QString>
 #include <QMetaType>
+#include <QVariant>
 
 class MovieInfo
 {
@@ -18,14 +19,13 @@ private:
     QString m_fileName;
 
 public:
-    static MovieInfo get(const QString & fileName);
     QString info() const;
     int duration() const;
     int bitrate() const;
     int height() const;
     int width() const;
     QString name() const;
-    QString fineName() const;
+    QString fileName() const;
 };
 
 Q_DECLARE_METATYPE(MovieInfo)
