@@ -22,6 +22,7 @@ MovieInfo::MovieInfo(const QString & fileName):
         m_width(-1)
 {
     this->m_name = QFileInfo(fileName).fileName();
+    this->m_fileName = fileName;
 
     QString prg = AppSettings::ffmpegFolder() + QDir::separator() + "ffmpeg.exe";
     QStringList args = QStringList() << "-i" << fileName;
@@ -50,7 +51,6 @@ MovieInfo::MovieInfo(const QString & fileName):
 
     re.setPattern("bitrate:\\s(\\d+)\\skb");
     if (re.indexIn(txt) > 0) {
-        qDebug() <<re.cap(1);
         this->m_bitrate = re.cap(1).toInt();
     }
 
@@ -95,4 +95,9 @@ int MovieInfo::width() const
 QString MovieInfo::name() const
 {
     return this->m_name;
+}
+
+QString MovieInfo::fineName() const
+{
+    return this->m_fileName;
 }

@@ -2,9 +2,10 @@
 #define MOVIECONVERTTHREAD_H
 
 #include "videoprofile.h"
+#include "movieinfo.h"
 
 #include <QThread>
-#include <QStringList>
+#include <QList>
 #include <QProcess>
 
 class MovieConvertThread : public QThread
@@ -12,17 +13,20 @@ class MovieConvertThread : public QThread
     Q_OBJECT
 
 private:
-    QStringList m_sources;
+    QList<MovieInfo> m_movies;
     bool stopPlease;    
     VideoProfile m_videoProfile;
 
 public:
-    MovieConvertThread(QStringList const &sources, VideoProfile const &videoProfile);
+    MovieConvertThread(QList<MovieInfo> const &movies, VideoProfile const &videoProfile);
     virtual void run();
     void stopWhenYouCan();
 
 signals:
-    void progress(int newValue);
+    void progressMovie(int actual);
+    void progressOverall(int actual);
+    void startConvert(MovieInfo const &movieinfo);
+    void finishedConvert(MovieInfo const &movieinfo, bool ok);
 
 };
 

@@ -43,7 +43,10 @@ private slots:
     void on_actionAdd_Movie_triggered();
     void on_actionAbout_triggered();
     void on_actionOptions_triggered();
+
     void on_movieConverterThread_finished();
+    void on_movieConverterThread_startConvert(MovieInfo const & movieInfo);
+    void on_movieConverterThread_finishedConvert(MovieInfo const & movieInfo, bool ok);
 };
 
 #endif // MAINWINDOW_H

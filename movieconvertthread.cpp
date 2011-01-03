@@ -19,11 +19,11 @@ static void lookupNumberOfCpu() {
 /* Hack win32 end */
 
 
-MovieConvertThread::MovieConvertThread(QStringList const &sources, VideoProfile const &videoProfile):
+MovieConvertThread::MovieConvertThread(QList<MovieInfo> const &movies, VideoProfile const &videoProfile):
     stopPlease(false)
 {
     lookupNumberOfCpu();
-    this->m_sources = sources;
+    this->m_movies = movies;
     this->m_videoProfile = videoProfile;
 }
 
@@ -33,8 +33,19 @@ void MovieConvertThread::stopWhenYouCan()
 }
 
 void MovieConvertThread::run() {
-    for (int i = 0; i < m_sources.size(); i++) {
-        QString fin = m_sources.at(i);
+    double overAllTimeTotal = 0;
+    double overAllTime = 0;
+
+    for (int i = 0; i < m_movies.size(); i++) {
+        qDebug() << m_movies.at(i).name() << m_movies.at(i).duration();
+        overAllTimeTotal += m_movies.at(i).duration();
+    }
+
+    qDebug() << "overAllTimeTotal" << overAllTimeTotal;
+
+    for (int i = 0; i < m_movies.size(); i++) {
+        emit(startConvert(m_movies.at(i)));
+        QString fin = m_movies.at(i).fineName();
         QString fout = fin;
         int idx = -1;
         if((idx = fout.lastIndexOf(".")) > -1) {
@@ -43,10 +54,7 @@ void MovieConvertThread::run() {
 
         fout = AppSettings::outputFolder() + QDir::separator() + m_videoProfile.prefix() + QFileInfo(fout).fileName();
 
-        //qDebug() << fout;
-
         QString prg = AppSettings::ffmpegFolder() + "\\ffmpeg.exe";
-        //qDebug() << prg;
         QStringList args = QStringList() << "-y" << "-i" << fin;
         args << m_videoProfile.options().split(" ");
 
@@ -55,44 +63,34 @@ void MovieConvertThread::run() {
             args << "-threads" << QString::number(cpuCount);
 
         args << fout;
-        qDebug() << args;
-        qDebug() << fout;
 
         QProcess proc;
         proc.start(prg, args, QProcess::ReadOnly);
         if (!proc.waitForStarted()) {
-            qDebug() << "Not started";
-            return;
+            emit(finishedConvert(m_movies.at(i), false));
+            continue;
         }
 
-        int totalDuraction = -1;
         QRegExp re("time=(\\S*)");
         while (!proc.waitForFinished(500)) {
             if (this->stopPlease) {
-                qDebug() << "Ops, stop de ffmpeg";
                 proc.close();
+                emit(finishedConvert(m_movies.at(i), false));
                 return;
             }
 
             QString log = proc.readAllStandardError();
-            if (totalDuraction > 0 && re.indexIn(log) > 0) {
+            if (re.indexIn(log) > 0) {
                 float time = re.cap(1).toFloat();
-                time = (time/totalDuraction) * 100;
-
-                emit progress((int)time);
-            } else if (totalDuraction < 0) {
-                QRegExp r1("Duration:\\s([^,]*)");
-                if (r1.indexIn(log) > 0) {
-                    QStringList fields = r1.cap(1).split(":");
-                    if (fields.size() == 3) {
-                        totalDuraction = fields.at(2).toFloat();
-                        totalDuraction += fields.at(1).toInt() * 60;
-                        totalDuraction += fields.at(0).toInt() * 60 * 60;
-                    }
-                }
+                time = (time/m_movies.at(i).duration()) * 100;
+                emit progressMovie((int)time);
             }
         }
+        overAllTime += m_movies.at(i).duration();
+        qDebug() << "overAllTime" << overAllTime;
+        double overall = (overAllTime/overAllTimeTotal) * 100;
+        emit progressOverall((int)overall);
 
-        qDebug() << proc.readAllStandardError();
+        emit(finishedConvert(m_movies.at(i), true));
     }
 }

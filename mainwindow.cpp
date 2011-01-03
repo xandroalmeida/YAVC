@@ -55,7 +55,7 @@ void MainWindow::on_actionAdd_Movie_triggered()
 {
     QFileDialog fileDlg;
     fileDlg.setFileMode(QFileDialog::ExistingFiles);
-    fileDlg.setNameFilter(tr("Movies (*.mov *.*)"));
+    fileDlg.setNameFilter(tr("Movies (*.mov *.avi *.mpg *.mp4 *.mpeg)"));
     fileDlg.setDirectory(AppSettings::defaultInputFolder());
     if (fileDlg.exec()) {
         AppSettings::setDefaultInputFolder(QFileInfo(fileDlg.selectedFiles()[0]).absoluteDir().absolutePath());
@@ -85,7 +85,7 @@ void MainWindow::on_btnRemove_clicked()
 
 void MainWindow::on_cbQuality_currentIndexChanged(QString str)
 {
-    qDebug() << str;
+
 }
 
 void MainWindow::setUiToConvertingVideo(bool enable)
@@ -112,25 +112,39 @@ void MainWindow::setUiToConvertingVideo(bool enable)
 void MainWindow::on_actionConvert_Movies_triggered()
 {
     setUiToConvertingVideo(true);
-    QStringList sources;
+    QList<MovieInfo> movies;
 
     for (int i = 0; i < ui->tblMovies->count(); i++) {
-        QListWidgetItem* item = ui->tblMovies->itemAt(i,0);
-        sources << item->text();
+        movies << ui->tblMovies->item(i)->data(Qt::UserRole).value<MovieInfo>();
     }
 
     int idx = ui->cbQuality->currentIndex();
     VideoProfile data = ui->cbQuality->itemData(idx).value<VideoProfile>();
-    this->movieConvertThread = new MovieConvertThread(sources, data);
+    this->movieConvertThread = new MovieConvertThread(movies, data);
     connect(this->movieConvertThread
             ,SIGNAL(finished())
             ,this
             ,SLOT(on_movieConverterThread_finished()));
     connect(this->movieConvertThread
-            ,SIGNAL(progress(int))
+            ,SIGNAL(startConvert(MovieInfo))
+            ,this
+            ,SLOT(on_movieConverterThread_startConvert(MovieInfo)));
+    connect(this->movieConvertThread
+            ,SIGNAL(finishedConvert(MovieInfo,bool))
+            ,this
+            ,SLOT(on_movieConverterThread_finishedConvert(MovieInfo,bool)));
+
+
+    connect(this->movieConvertThread
+            ,SIGNAL(progressMovie(int))
             ,ui->pbMovie
             ,SLOT(setValue(int)));
+    connect(this->movieConvertThread
+            ,SIGNAL(progressOverall(int))
+            ,ui->pbTotal
+            ,SLOT(setValue(int)));
     ui->pbMovie->setValue(0);
+    ui->pbTotal->setValue(0);
     movieConvertThread->start();
 }
 
@@ -157,15 +171,21 @@ void MainWindow::on_txtOutpuFolder_editingFinished()
     AppSettings::setOutputFolder(ui->txtOutpuFolder->text());
 }
 
-
-
 void MainWindow::on_movieConverterThread_finished()
 {
-    qDebug() << "on_movieConverterThread_finished";
     this->movieConvertThread->disconnect(this);
     delete this->movieConvertThread;
     this->movieConvertThread = NULL;
     setUiToConvertingVideo(false);
+    ui->statusBar->clearMessage();
+}
+
+void MainWindow::on_movieConverterThread_startConvert(MovieInfo const & movieInfo) {
+    ui->statusBar->showMessage("Converting " + movieInfo.name());
+}
+
+void MainWindow::on_movieConverterThread_finishedConvert(MovieInfo const & movieInfo, bool ok) {
+    ui->statusBar->clearMessage();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -180,7 +200,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 void MainWindow::addMovie(QString const &fileName)
 {
-    qDebug() << "addMovie" << fileName;
     MovieInfo movieInfo = MovieInfo::get(fileName);
     QVariant data;
     data.setValue(movieInfo);

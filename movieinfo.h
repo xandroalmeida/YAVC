@@ -15,6 +15,7 @@ private:
     int m_height;
     int m_width;
     QString m_name;
+    QString m_fileName;
 
 public:
     static MovieInfo get(const QString & fileName);
@@ -24,6 +25,7 @@ public:
     int height() const;
     int width() const;
     QString name() const;
+    QString fineName() const;
 };
 
 Q_DECLARE_METATYPE(MovieInfo)
