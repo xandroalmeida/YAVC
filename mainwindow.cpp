@@ -67,6 +67,7 @@ void MainWindow::on_actionAdd_Movie_triggered()
             item.setText(fileDlg.selectedFiles()[i]);
             addMovie(fileDlg.selectedFiles()[i]);
         }
+
     }
 
     if (hasMovieToConvert())
