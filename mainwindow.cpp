@@ -26,7 +26,6 @@ MainWindow::MainWindow(QWidget *parent) :
         QVariant data;
         data.setValue(profiles.at(i));
         ui->cbQuality->addItem(profiles.at(i).name(), data);
-        qDebug() << profiles.at(i).name() << defaultVideoQuality;
         if (profiles.at(i).name() == defaultVideoQuality)
             ui->cbQuality->setCurrentIndex(i);
     }
