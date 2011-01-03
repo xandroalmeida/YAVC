@@ -37,11 +37,8 @@ void MovieConvertThread::run() {
     double overAllTime = 0;
 
     for (int i = 0; i < m_movies.size(); i++) {
-        qDebug() << m_movies.at(i).name() << m_movies.at(i).duration();
         overAllTimeTotal += m_movies.at(i).duration();
     }
-
-    qDebug() << "overAllTimeTotal" << overAllTimeTotal;
 
     for (int i = 0; i < m_movies.size(); i++) {
         emit(startConvert(m_movies.at(i)));
@@ -87,7 +84,6 @@ void MovieConvertThread::run() {
             }
         }
         overAllTime += m_movies.at(i).duration();
-        qDebug() << "overAllTime" << overAllTime;
         double overall = (overAllTime/overAllTimeTotal) * 100;
         emit progressOverall((int)overall);
 
