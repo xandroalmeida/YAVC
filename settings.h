@@ -19,6 +19,9 @@ public:
     static QString defaultInputFolder();
     static void setDefaultInputFolder(const QString &value);
 
+    static QString defaultVideoQuality();
+    static void setDefaultVideoQuality(const QString &value);
+
 };
 
 #endif // SETTINGS_H

@@ -54,3 +54,16 @@ void AppSettings::setDefaultInputFolder(const QString &value) {
     m_settings.setValue("defaultInputFolder", QVariant(value));
     m_settings.sync();
 }
+
+QString AppSettings::defaultVideoQuality() {
+    QSettings m_settings;
+    QString ret = m_settings.value("defaultVideoQuality").value<QString>();
+    return ret;
+}
+
+void AppSettings::setDefaultVideoQuality(const QString &value) {
+    QSettings m_settings;
+    m_settings.setValue("defaultVideoQuality", QVariant(value));
+    m_settings.sync();
+}
+

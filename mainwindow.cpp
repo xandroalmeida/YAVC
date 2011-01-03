@@ -21,10 +21,14 @@ MainWindow::MainWindow(QWidget *parent) :
     this->m_selectedItem = NULL;
 
     QList<VideoProfile> profiles = VideoProfile::getList();
+    QString defaultVideoQuality = AppSettings::defaultVideoQuality();
     for (int i = 0; i < profiles.size(); i++) {
         QVariant data;
         data.setValue(profiles.at(i));
         ui->cbQuality->addItem(profiles.at(i).name(), data);
+        qDebug() << profiles.at(i).name() << defaultVideoQuality;
+        if (profiles.at(i).name() == defaultVideoQuality)
+            ui->cbQuality->setCurrentIndex(i);
     }
     ui->txtOutpuFolder->setText(AppSettings::outputFolder());
     ui->pbMovie->hide();
@@ -85,7 +89,7 @@ void MainWindow::on_btnRemove_clicked()
 
 void MainWindow::on_cbQuality_currentIndexChanged(QString str)
 {
-
+    AppSettings::setDefaultVideoQuality(str);
 }
 
 void MainWindow::setUiToConvertingVideo(bool enable)
