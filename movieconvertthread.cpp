@@ -40,6 +40,8 @@ void MovieConvertThread::run() {
         overAllTimeTotal += m_movies.at(i).duration();
     }
 
+    qDebug() << "overAllTimeTotal = " << overAllTimeTotal;
+
     for (int i = 0; i < m_movies.size(); i++) {
         emit(startConvert(m_movies.at(i)));
         QString fin = m_movies.at(i).fileName();
@@ -51,7 +53,7 @@ void MovieConvertThread::run() {
 
         fout = AppSettings::outputFolder() + QDir::separator() + m_videoProfile.prefix() + QFileInfo(fout).fileName();
 
-        QString prg = AppSettings::ffmpegFolder() + "\\ffmpeg.exe";
+        QString prg = AppSettings::ffmpegFolder() + "ffmpeg.exe";
         QStringList args = QStringList() << "-y" << "-i" << fin;
         args << m_videoProfile.options().split(" ");
 
@@ -60,29 +62,44 @@ void MovieConvertThread::run() {
             args << "-threads" << QString::number(cpuCount);
 
         args << fout;
+        qDebug() << "number of CPUs detected: " << cpuCount;
 
         QProcess proc;
+
+        qDebug() << prg << args;
+
         proc.start(prg, args, QProcess::ReadOnly);
         if (!proc.waitForStarted()) {
+            qDebug() << "err on start ffmpeg.";
             emit(finishedConvert(m_movies.at(i), false));
             continue;
         }
 
+        qDebug() << "ffmpeg started.";
+
         QRegExp re("time=(\\S*)");
         while (!proc.waitForFinished(500)) {
+            QString log = proc.readAllStandardError();
+
+            qDebug() << log;
             if (this->stopPlease) {
                 proc.close();
                 emit(finishedConvert(m_movies.at(i), false));
                 return;
             }
 
-            QString log = proc.readAllStandardError();
             if (re.indexIn(log) > 0) {
                 float time = re.cap(1).toFloat();
                 time = (time/m_movies.at(i).duration()) * 100;
                 emit progressMovie((int)time);
             }
         }
+        //qDebug() << proc.readAllStandardOutput();
+        //qDebug() << proc.readAllStandardError();
+
+
+        qDebug() << "ffmpeg finished.";
+
         overAllTime += m_movies.at(i).duration();
         double overall = (overAllTime/overAllTimeTotal) * 100;
         emit progressOverall((int)overall);

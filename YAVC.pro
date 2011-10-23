@@ -31,7 +31,9 @@ FORMS    += mainwindow.ui \
     optionsdialog.ui \
     aboutdialog.ui
 
-OTHER_FILES +=
+OTHER_FILES += \
+    info/profiles.xml
 
 RESOURCES += \
     icons.qrc
+

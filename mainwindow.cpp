@@ -114,6 +114,8 @@ void MainWindow::setUiToConvertingVideo(bool enable)
 
 void MainWindow::on_actionConvert_Movies_triggered()
 {
+    qDebug() << "on_actionConvert_Movies_triggered";
+
     setUiToConvertingVideo(true);
     QList<MovieInfo> movies;
 
@@ -148,6 +150,8 @@ void MainWindow::on_actionConvert_Movies_triggered()
             ,SLOT(setValue(int)));
     ui->pbMovie->setValue(0);
     ui->pbTotal->setValue(0);
+
+
     movieConvertThread->start();
 }
 

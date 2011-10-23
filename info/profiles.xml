@@ -1,13 +1,13 @@
 <profiles>
 	<profile>
 		<name>To watch Full HD TV</name>
-		<options>-vcodec libx264 -acodec libfaac -ab 192kb -crf 20.0</options>
+                <options>-vcodec libx264 -acodec libmp3lame -crf 20.0</options>
 		<extension>mp4</extension>
 		<prefix>Full-hd-</prefix>
 	</profile>
-	<profile>
+        <profile>
 		<name>To watch HD TV</name>
-		<options>-vcodec libx264 -acodec libfaac -ab 192kb -crf 25.0</options>		
+                <options>-vcodec libx264 -acodec libmp3lame -crf 25.0</options>
 		<extension>mp4</extension>
 		<prefix>hd-</prefix>
 	</profile>
