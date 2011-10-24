@@ -1,20 +1,20 @@
 <profiles>
 	<profile>
 		<name>To watch Full HD TV</name>
-                <options>-vcodec libx264 -acodec libmp3lame -crf 20.0</options>
+                <options>-vcodec libx264 -s 1920x1080 -acodec libmp3lame -crf 20.0</options>
 		<extension>mp4</extension>
 		<prefix>Full-hd-</prefix>
 	</profile>
         <profile>
 		<name>To watch HD TV</name>
-                <options>-vcodec libx264 -acodec libmp3lame -crf 25.0</options>
+                <options>-vcodec libx264 -s 1280x720 -acodec libmp3lame -crf 25.0</options>
 		<extension>mp4</extension>
 		<prefix>hd-</prefix>
 	</profile>
 	<profile>
 		<name>To watch DVD</name>
-		<options>-f dvd -target pal-dvd -vb 1440k -ab 128k</options>	
-		<extension>mpg</extension>
+                <options>-vcodec libx264 -s 720x576 -acodec libmp3lame -crf 30.0</options>
+                <extension>mp4</extension>
 		<prefix>dvd-</prefix>
 	</profile>
 	<profile>
