@@ -16,6 +16,7 @@ MovieInfo::MovieInfo(const QString & fileName)
     this->m_fileName = fileName;
 
     QString prg = AppSettings::ffmpegFolder() + QDir::separator() + "ffmpeg.exe";
+    qDebug() << prg;
     QStringList args = QStringList() << "-i" << fileName;
     QProcess proc;
     proc.start(prg, args, QProcess::ReadOnly);

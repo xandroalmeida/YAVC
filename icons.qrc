@@ -1,12 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>icons/about Blue.png</file>
-        <file>icons/beer 48.png</file>
         <file>icons/Folder Options.png</file>
         <file>icons/Video 1.png</file>
         <file>icons/Video.png</file>
         <file>info/about.html</file>
         <file>info/profiles.xml</file>
         <file>icons/Remove-icon.png</file>
+        <file>icons/app.ico</file>
     </qresource>
 </RCC>

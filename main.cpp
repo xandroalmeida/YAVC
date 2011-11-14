@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
     QCoreApplication::setOrganizationName("SonicIT");
     QCoreApplication::setOrganizationDomain("sonicit.com.br");
     QCoreApplication::setApplicationName("YAVC");
-    QCoreApplication::setApplicationVersion("0.0.1-dev");
+    QCoreApplication::setApplicationVersion("0.1.0-beta");
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
 

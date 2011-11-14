@@ -53,7 +53,7 @@ void MovieConvertThread::run() {
 
         fout = AppSettings::outputFolder() + QDir::separator() + m_videoProfile.prefix() + QFileInfo(fout).fileName();
 
-        QString prg = AppSettings::ffmpegFolder() + "ffmpeg.exe";
+        QString prg = AppSettings::ffmpegFolder() + QDir::separator() + "ffmpeg.exe";
         QStringList args = QStringList() << "-y" << "-i" << fin;
         args << m_videoProfile.options().split(" ");
 
@@ -77,7 +77,7 @@ void MovieConvertThread::run() {
 
         qDebug() << "ffmpeg started.";
 
-        QRegExp re("time=(\\S*)");
+        QRegExp re("time=(\\S*\\s)");
         while (!proc.waitForFinished(500)) {
             QString log = proc.readAllStandardError();
 
@@ -89,7 +89,12 @@ void MovieConvertThread::run() {
             }
 
             if (re.indexIn(log) > 0) {
-                float time = re.cap(1).toFloat();
+                qDebug() << "RegEx: [" << re.cap(1) << "]";
+                QStringList timeFields = re.cap(1).trimmed().split(":");
+                qDebug() << "Fields: " << timeFields;
+                float time = timeFields[0].toFloat() * 60 * 60;
+                time += timeFields[1].toFloat() * 60;
+                time += timeFields[2].toFloat();
                 time = (time/m_movies.at(i).duration()) * 100;
                 emit progressMovie((int)time);
             }

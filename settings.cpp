@@ -12,12 +12,13 @@ AppSettings::~AppSettings()
 
 
 QString AppSettings::ffmpegFolder(){
-#ifdef QT_NO_DEBUG
+#ifndef QT_NO_DEBUG
     QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows", QSettings::NativeFormat);
     settings.beginGroup("CurrentVersion/Explorer/Shell Folders");
     return settings.value("My Video").toString();
 #else
-    return "C:/Projetos/";
+    QSettings settings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\YAVC", QSettings::NativeFormat);
+    return settings.value("Install_Dir").toString();
 #endif
 }
 

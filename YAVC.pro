@@ -8,7 +8,7 @@ QT       += core gui
 
 TARGET = YAVC
 TEMPLATE = app
-
+RC_FILE = yavc.rc
 
 SOURCES += main.cpp\
         mainwindow.cpp \
@@ -32,8 +32,14 @@ FORMS    += mainwindow.ui \
     aboutdialog.ui
 
 OTHER_FILES += \
-    info/profiles.xml
+    info/profiles.xml \
+    README
 
 RESOURCES += \
     icons.qrc
+
+
+
+
+
 
