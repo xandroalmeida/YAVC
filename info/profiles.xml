@@ -2,31 +2,31 @@
 	<profile>
 		<name>To watch Full HD TV</name>
                 <options>-vcodec libx264 -s 1920x1080 -acodec libmp3lame -crf 20.0</options>
-		<extension>mp4</extension>
+                <extension>avi</extension>
 		<prefix>Full-hd-</prefix>
 	</profile>
         <profile>
 		<name>To watch HD TV</name>
                 <options>-vcodec libx264 -s 1280x720 -acodec libmp3lame -crf 25.0</options>
-		<extension>mp4</extension>
+                <extension>avi</extension>
 		<prefix>hd-</prefix>
 	</profile>
 	<profile>
 		<name>To watch DVD</name>
-                <options>-vcodec libx264 -s 720x576 -acodec libmp3lame -crf 30.0</options>
-                <extension>mp4</extension>
+                <options>-vcodec libx264 -s 720x480 -acodec libmp3lame -crf 30.0</options>
+                <extension>avi</extension>
 		<prefix>dvd-</prefix>
 	</profile>
 	<profile>
-		<name>To watch iPhone/iPod Touch</name>
-		<options>-r 29.97 -vcodec libx264 -flags +loop -cmp +chroma -deblockalpha 0 -deblockbeta 0 -crf 21 -bt 256k -refs 1 -coder 0 -me_method full -me_range 16 -subq 5 -partitions +parti4x4+parti8x8+partp8x8 -g 250 -keyint_min 25 -level 30 -trellis 2 -sc_threshold 40 -i_qfactor 0.71 -s 320x240 -aspect 4:3 -acodec libfaac -ab 112kb -ar 48000 -ac 2</options>		
-		<extension>m4v</extension>
-		<prefix>iphone-</prefix>
+                <name>To watch mobile</name>
+                <options>-vcodec libx264 -s 320x240 -acodec libmp3lame -deinterlace -sameq -crf 30.0</options>
+                <extension>avi</extension>
+                <prefix>mobile-</prefix>
 	</profile>
 	<profile>
 		<name>To watch Web</name>
-		<options>-ar 22050</options>
-		<extension>flv</extension>
+                <options>-vcodec libx264 -s 640x480 -acodec libmp3lame -deinterlace -sameq -crf 30.0</options>
+                <extension>avi</extension>
 		<prefix>web-</prefix>
 	</profile>
 	

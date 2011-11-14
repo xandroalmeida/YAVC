@@ -95,20 +95,21 @@ void MovieConvertThread::run() {
                 float time = timeFields[0].toFloat() * 60 * 60;
                 time += timeFields[1].toFloat() * 60;
                 time += timeFields[2].toFloat();
+
+                double overall = ((overAllTime + time)/overAllTimeTotal) * 100;
+                emit progressOverall((int)overall);
+                qDebug() << "overAllTime=" << overAllTime << " -- " << (overAllTime + time);
+
                 time = (time/m_movies.at(i).duration()) * 100;
                 emit progressMovie((int)time);
             }
         }
+
         //qDebug() << proc.readAllStandardOutput();
         //qDebug() << proc.readAllStandardError();
 
-
         qDebug() << "ffmpeg finished.";
-
         overAllTime += m_movies.at(i).duration();
-        double overall = (overAllTime/overAllTimeTotal) * 100;
-        emit progressOverall((int)overall);
-
         emit(finishedConvert(m_movies.at(i), true));
     }
 }
