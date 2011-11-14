@@ -6,6 +6,7 @@ AboutDialog::AboutDialog(QWidget *parent) :
     ui(new Ui::AboutDialog)
 {
     ui->setupUi(this);
+    this->ui->lblVersion->setText(QCoreApplication::applicationVersion());
 }
 
 AboutDialog::~AboutDialog()

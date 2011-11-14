@@ -2,16 +2,26 @@
 ;Include Modern UI
 
 ;  !include "MUI2.nsh"
+XPStyle on
 
 ; The name of the installer
 Name "YAVC"
-VIProductVersion "0.1.0-beta"
+VIProductVersion "0.1.1.0"
+LicenseData License.txt
+LicenseForceSelection checkbox
 
+VIAddVersionKey "ProductName" "YAVC"
+VIAddVersionKey "Comments" ""
+VIAddVersionKey "CompanyName" "SonicIT - Soluções em TI"
+VIAddVersionKey "FileDescription" "Instalador do YAVC"
+VIAddVersionKey "FileVersion" $VIProductVersion
+	
 ; The file to write
 OutFile "yavc-setup.exe"
-
+SetCompressor /SOLID lzma
 ; The default installation directory
 InstallDir $PROGRAMFILES\YAVC
+
 
 ; Registry key to check for directory (so if you install again, it will 
 ; overwrite the old one automatically)
@@ -24,6 +34,7 @@ RequestExecutionLevel admin
 
 ; Pages
 
+Page license
 Page components
 Page directory
 Page instfiles
