@@ -58,7 +58,7 @@ void MainWindow::on_actionAdd_Movie_triggered()
 {
     QFileDialog fileDlg;
     fileDlg.setFileMode(QFileDialog::ExistingFiles);
-    fileDlg.setNameFilter(tr("Movies (*.mov *.avi *.mpg *.mp4 *.mpeg)"));
+    fileDlg.setNameFilter(tr("Movies (*.mov *.avi *.mpg *.mp4 *.mpeg *.mkv)"));
     fileDlg.setDirectory(AppSettings::defaultInputFolder());
     if (fileDlg.exec()) {
         AppSettings::setDefaultInputFolder(QFileInfo(fileDlg.selectedFiles()[0]).absoluteDir().absolutePath());
