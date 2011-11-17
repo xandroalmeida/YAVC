@@ -17,8 +17,15 @@ QString AppSettings::ffmpegFolder(){
     settings.beginGroup("CurrentVersion/Explorer/Shell Folders");
     return settings.value("My Video").toString();
 #else
+    QString value;
     QSettings settings("HKEY_LOCAL_MACHINE\\SOFTWARE\\Wow6432Node\\YAVC", QSettings::NativeFormat);
-    return settings.value("Install_Dir").toString();
+    value = settings.value("Install_Dir").toString();
+    if (value.isEmpty()) {
+        QSettings settings1("HKEY_LOCAL_MACHINE\\SOFTWARE\\YAVC", QSettings::NativeFormat);
+        value = settings1.value("Install_Dir").toString();
+    }
+
+    return value;
 #endif
 }
 
