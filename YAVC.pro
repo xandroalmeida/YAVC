@@ -33,10 +33,12 @@ FORMS    += mainwindow.ui \
 
 OTHER_FILES += \
     info/profiles.xml \
-    README
+    README \
+    nsis/setup_install.nsi
 
 RESOURCES += \
     icons.qrc
+
 
 
 
