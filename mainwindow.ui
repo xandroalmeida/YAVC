@@ -11,10 +11,10 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>YAVC</string>
+   <string/>
   </property>
   <property name="windowIcon">
-   <iconset resource="icons.qrc">
+   <iconset>
     <normaloff>:/icons/beer 48.png</normaloff>:/icons/beer 48.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">

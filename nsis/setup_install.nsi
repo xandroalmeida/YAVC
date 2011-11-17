@@ -6,7 +6,7 @@ XPStyle on
 
 ; The name of the installer
 Name "YAVC"
-VIProductVersion "0.1.3.1"
+VIProductVersion "0.1.4"
 LicenseData License.txt
 LicenseForceSelection checkbox
 

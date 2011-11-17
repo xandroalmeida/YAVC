@@ -18,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowTitle("YAVC - Yet Another Video Converter (ver. " + QCoreApplication::applicationVersion() + ")");
     this->m_selectedItem = NULL;
 
     QList<VideoProfile> profiles = VideoProfile::getList();
