@@ -8,15 +8,14 @@
 
 MovieInfo::MovieInfo()
 {
-}
-
-MovieInfo::MovieInfo(const QString & fileName)
-{
     this->m_width = 0;
     this->m_height = 0;
     this->m_bitrate = 0;
     this->m_duration = 0;
+}
 
+MovieInfo::MovieInfo(const QString & fileName)
+{
     this->m_name = QFileInfo(fileName).fileName();
     this->m_fileName = fileName;
 
