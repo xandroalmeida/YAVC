@@ -6,6 +6,7 @@
 
 #include "settings.h"
 
+#ifdef WIN32
 #include <windows.h>
 
 /* Hack win32 start */
@@ -17,7 +18,7 @@ static void lookupNumberOfCpu() {
     cpuCount = si.dwNumberOfProcessors;
 }
 /* Hack win32 end */
-
+#endif
 
 MovieConvertThread::MovieConvertThread(QList<MovieInfo> const &movies, VideoProfile const &videoProfile):
     stopPlease(false)
