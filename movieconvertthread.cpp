@@ -6,11 +6,12 @@
 
 #include "settings.h"
 
+int static cpuCount = 2;
+
 #ifdef WIN32
 #include <windows.h>
 
 /* Hack win32 start */
-int static cpuCount = 0 ;
 
 static void lookupNumberOfCpu() {
     SYSTEM_INFO si;
@@ -23,7 +24,9 @@ static void lookupNumberOfCpu() {
 MovieConvertThread::MovieConvertThread(QList<MovieInfo> const &movies, VideoProfile const &videoProfile):
     stopPlease(false)
 {
+#ifdef WIN32
     lookupNumberOfCpu();
+#endif
     this->m_movies = movies;
     this->m_videoProfile = videoProfile;
 }
