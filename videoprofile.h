@@ -1,18 +1,27 @@
-#ifndef VIDEOPROFILE_H
-#define VIDEOPROFILE_H
+/*
+ * Copyright (C) 2012 Alexandro D. Almeida <alexandro@sonicit.com.br>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
+#ifndef VIDEOPROFILE_H_
+#define VIDEOPROFILE_H_
+
 #include <QList>
 #include <QString>
 #include <QMetaType>
 
-class VideoProfile
-{
-private:
+class VideoProfile {
+ private:
     QString m_name;
     QString m_options;
     QString m_extension;
     QString m_prefix;
 
-public:
+ public:
     VideoProfile();
     static QList<VideoProfile> getList();
 
@@ -23,4 +32,4 @@ public:
 };
 
 Q_DECLARE_METATYPE(VideoProfile)
-#endif // VIDEOPROFILE_H
+#endif  // VIDEOPROFILE_H_

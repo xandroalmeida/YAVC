@@ -1,15 +1,24 @@
-#ifndef MOVIEINFO_H
-#define MOVIEINFO_H
+/*
+ * Copyright (C) 2012 Alexandro D. Almeida <alexandro@sonicit.com.br>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
+#ifndef MOVIEINFO_H_
+#define MOVIEINFO_H_
+
 #include <QString>
 #include <QMetaType>
 #include <QVariant>
 
-class MovieInfo
-{
-public:
-    MovieInfo(const QString & fileName);
+class MovieInfo {
+ public:
+    explicit MovieInfo(const QString & fileName);
     MovieInfo();
-private:
+ private:
     QString infoText;
     int m_duration;
     int m_bitrate;
@@ -18,7 +27,7 @@ private:
     QString m_name;
     QString m_fileName;
 
-public:
+ public:
     QString info() const;
     int duration() const;
     int bitrate() const;
@@ -29,4 +38,4 @@ public:
 };
 
 Q_DECLARE_METATYPE(MovieInfo)
-#endif // MOVIEINFO_H
+#endif  // MOVIEINFO_H_

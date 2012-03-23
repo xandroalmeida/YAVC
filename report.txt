@@ -1,0 +1,105 @@
+Done processing aboutdialog.cpp
+Total errors found: 0
+Done processing aboutdialog.h
+Total errors found: 0
+Done processing main.cpp
+Total errors found: 0
+mainwindow.cpp:29:  Lines should very rarely be longer than 100 characters  [whitespace/line_length] [4]
+mainwindow.cpp:69:  Lines should very rarely be longer than 100 characters  [whitespace/line_length] [4]
+mainwindow.cpp:75:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+mainwindow.cpp:80:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+mainwindow.cpp:131:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:132:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:133:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:135:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:136:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:137:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:139:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:140:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:141:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:145:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:145:  All parameters should be named in a function  [readability/function] [3]
+mainwindow.cpp:146:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:147:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:147:  All parameters should be named in a function  [readability/function] [3]
+mainwindow.cpp:149:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:149:  All parameters should be named in a function  [readability/function] [3]
+mainwindow.cpp:150:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:151:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:151:  All parameters should be named in a function  [readability/function] [3]
+mainwindow.cpp:169:  { should almost always be at the end of the previous line  [whitespace/braces] [4]
+mainwindow.cpp:187:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+mainwindow.cpp:191:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:195:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+mainwindow.cpp:200:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:202:  Missing space after ,  [whitespace/comma] [3]
+mainwindow.cpp:239:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+mainwindow.cpp:249:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+Done processing mainwindow.cpp
+Total errors found: 31
+mainwindow.h:62:  #endif line should be "#endif  // MAINWINDOW_H_"  [build/header_guard] [5]
+mainwindow.h:45:  Weird number of spaces at line-start.  Are you using a 2-space indent?  [whitespace/indent] [3]
+mainwindow.h:51:  Extra space before )  [whitespace/parens] [2]
+mainwindow.h:59:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+mainwindow.h:62:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing mainwindow.h
+Total errors found: 5
+movieconvertthread.cpp:18:  Storage class (static, extern, typedef, etc) should be first.  [build/storage_class] [5]
+movieconvertthread.cpp:33:  Lines should very rarely be longer than 100 characters  [whitespace/line_length] [4]
+movieconvertthread.cpp:35:  { should almost always be at the end of the previous line  [whitespace/braces] [4]
+movieconvertthread.cpp:62:  Missing space before ( in if(  [whitespace/parens] [5]
+movieconvertthread.cpp:66:  Lines should very rarely be longer than 100 characters  [whitespace/line_length] [4]
+movieconvertthread.cpp:68:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+movieconvertthread.cpp:72:  Should have a space between // and comment  [whitespace/comments] [4]
+movieconvertthread.cpp:112:  Using C-style cast.  Use static_cast<int>(...) instead  [readability/casting] [4]
+movieconvertthread.cpp:113:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+movieconvertthread.cpp:116:  Using C-style cast.  Use static_cast<int>(...) instead  [readability/casting] [4]
+movieconvertthread.cpp:120:  Should have a space between // and comment  [whitespace/comments] [4]
+movieconvertthread.cpp:121:  Should have a space between // and comment  [whitespace/comments] [4]
+Done processing movieconvertthread.cpp
+Total errors found: 12
+movieconvertthread.h:41:  #endif line should be "#endif  // MOVIECONVERTTHREAD_H_"  [build/header_guard] [5]
+movieconvertthread.h:25:  Line ends in whitespace.  Consider deleting these extra spaces.  [whitespace/end_of_line] [4]
+movieconvertthread.h:29:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+movieconvertthread.h:38:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+movieconvertthread.h:41:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing movieconvertthread.h
+Total errors found: 5
+movieinfo.cpp:29:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+movieinfo.cpp:34:  Missing space before ( in if(  [whitespace/parens] [5]
+Done processing movieinfo.cpp
+Total errors found: 2
+movieinfo.h:41:  #endif line should be "#endif  // MOVIEINFO_H_"  [build/header_guard] [5]
+movieinfo.h:19:  Single-argument constructors should be marked explicit.  [runtime/explicit] [5]
+movieinfo.h:41:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing movieinfo.h
+Total errors found: 3
+optionsdialog.cpp:28:  { should almost always be at the end of the previous line  [whitespace/braces] [4]
+Done processing optionsdialog.cpp
+Total errors found: 1
+optionsdialog.h:33:  #endif line should be "#endif  // OPTIONSDIALOG_H_"  [build/header_guard] [5]
+optionsdialog.h:29:  Weird number of spaces at line-start.  Are you using a 2-space indent?  [whitespace/indent] [3]
+optionsdialog.h:33:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing optionsdialog.h
+Total errors found: 3
+settings.cpp:23:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+settings.cpp:28:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+settings.cpp:31:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+settings.cpp:43:  Lines should very rarely be longer than 100 characters  [whitespace/line_length] [4]
+settings.cpp:60:  Lines should very rarely be longer than 100 characters  [whitespace/line_length] [4]
+settings.cpp:62:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+Done processing settings.cpp
+Total errors found: 6
+settings.h:35:  #endif line should be "#endif  // SETTINGS_H_"  [build/header_guard] [5]
+settings.h:32:  Blank line at the end of a code block.  Is this needed?  [whitespace/blank_line] [3]
+settings.h:35:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing settings.h
+Total errors found: 3
+videoprofile.cpp:64:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+videoprofile.cpp:65:  Lines should be <= 80 characters long  [whitespace/line_length] [2]
+Done processing videoprofile.cpp
+Total errors found: 2
+videoprofile.h:35:  #endif line should be "#endif  // VIDEOPROFILE_H_"  [build/header_guard] [5]
+videoprofile.h:35:  At least two spaces is best between code and comments  [whitespace/comments] [2]
+Done processing videoprofile.h
+Total errors found: 2

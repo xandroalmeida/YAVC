@@ -1,3 +1,12 @@
+/*
+ * Copyright (C) 2012 Alexandro D. Almeida <alexandro@sonicit.com.br>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
 #include "movieinfo.h"
 #include "settings.h"
 
@@ -6,16 +15,14 @@
 #include <QDir>
 #include <QDebug>
 
-MovieInfo::MovieInfo()
-{
+MovieInfo::MovieInfo() {
     this->m_width = 0;
     this->m_height = 0;
     this->m_bitrate = 0;
     this->m_duration = 0;
 }
 
-MovieInfo::MovieInfo(const QString & fileName)
-{
+MovieInfo::MovieInfo(const QString & fileName) {
     this->m_name = QFileInfo(fileName).fileName();
     this->m_fileName = fileName;
 
@@ -24,7 +31,7 @@ MovieInfo::MovieInfo(const QString & fileName)
     QStringList args = QStringList() << "-i" << fileName;
     QProcess proc;
     proc.start(prg, args, QProcess::ReadOnly);
-    if(!proc.waitForStarted()) {
+    if (!proc.waitForStarted()) {
         this->infoText = "Err";
         return;
     }
@@ -57,37 +64,30 @@ MovieInfo::MovieInfo(const QString & fileName)
     }
 }
 
-QString MovieInfo::info() const
-{
+QString MovieInfo::info() const {
     return this->infoText;
 }
 
-int MovieInfo::duration() const
-{
+int MovieInfo::duration() const {
     return this->m_duration;
 }
 
-int MovieInfo::bitrate() const
-{
+int MovieInfo::bitrate() const {
     return this->m_bitrate;
 }
 
-int MovieInfo::height() const
-{
+int MovieInfo::height() const {
     return this->m_height;
 }
 
-int MovieInfo::width() const
-{
+int MovieInfo::width() const {
     return this->m_width;
 }
 
-QString MovieInfo::name() const
-{
+QString MovieInfo::name() const {
     return this->m_name;
 }
 
-QString MovieInfo::fileName() const
-{
+QString MovieInfo::fileName() const {
     return this->m_fileName;
 }

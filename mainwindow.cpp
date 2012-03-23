@@ -1,3 +1,12 @@
+/*
+ * Copyright (C) 2012 Alexandro D. Almeida <alexandro@sonicit.com.br>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "optionsdialog.h"
@@ -13,12 +22,12 @@
 #include <QProcess>
 #include <QListWidgetItem>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
-{
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent),
+    ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    this->setWindowTitle("YAVC - Yet Another Video Converter (ver. " + QCoreApplication::applicationVersion() + ")");
+    this->setWindowTitle("YAVC - Yet Another Video Converter (ver. "
+                         + QCoreApplication::applicationVersion() + ")");
     this->m_selectedItem = NULL;
 
     QList<VideoProfile> profiles = VideoProfile::getList();
@@ -38,46 +47,41 @@ MainWindow::MainWindow(QWidget *parent) :
     this->ui->tblMovies->model();
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::on_actionOptions_triggered()
-{
+void MainWindow::on_actionOptions_triggered() {
     OptionsDialog optDlg;
     optDlg.exec();
 }
 
-void MainWindow::on_actionAbout_triggered()
-{
+void MainWindow::on_actionAbout_triggered() {
     AboutDialog abtDlg;
     abtDlg.exec();
 }
 
-void MainWindow::on_actionAdd_Movie_triggered()
-{
+void MainWindow::on_actionAdd_Movie_triggered() {
     QFileDialog fileDlg;
     fileDlg.setFileMode(QFileDialog::ExistingFiles);
     fileDlg.setNameFilter(tr("Movies (*.mov *.avi *.mpg *.mp4 *.mpeg *.mkv)"));
     fileDlg.setDirectory(AppSettings::defaultInputFolder());
     if (fileDlg.exec()) {
-        AppSettings::setDefaultInputFolder(QFileInfo(fileDlg.selectedFiles()[0]).absoluteDir().absolutePath());
+        QFileInfo fileInfo(fileDlg.selectedFiles()[0]);
+        QString folderPath = QFileInfo(fileInfo).absoluteDir().absolutePath();
+        AppSettings::setDefaultInputFolder(folderPath);
         for (int i = 0; i < fileDlg.selectedFiles().length(); i++) {
             QListWidgetItem item;
             item.setText(fileDlg.selectedFiles()[i]);
             addMovie(fileDlg.selectedFiles()[i]);
         }
-
     }
 
     if (hasMovieToConvert())
         ui->actionConvert_Movies->setEnabled(true);
-
 }
 
-void MainWindow::on_btnRemove_clicked()
-{
+void MainWindow::on_btnRemove_clicked() {
     if (m_selectedItem) {
         removeselectedMovieMovie();
         ui->btnRemove->setEnabled(false);
@@ -88,13 +92,11 @@ void MainWindow::on_btnRemove_clicked()
     }
 }
 
-void MainWindow::on_cbQuality_currentIndexChanged(QString str)
-{
+void MainWindow::on_cbQuality_currentIndexChanged(QString str) {
     AppSettings::setDefaultVideoQuality(str);
 }
 
-void MainWindow::setUiToConvertingVideo(bool enable)
-{
+void MainWindow::setUiToConvertingVideo(bool enable) {
     ui->actionStop_Convert->setEnabled(enable);
 
     ui->actionConvert_Movies->setEnabled(!enable);
@@ -113,8 +115,7 @@ void MainWindow::setUiToConvertingVideo(bool enable)
     }
 }
 
-void MainWindow::on_actionConvert_Movies_triggered()
-{
+void MainWindow::on_actionConvert_Movies_triggered() {
     qDebug() << "on_actionConvert_Movies_triggered";
 
     setUiToConvertingVideo(true);
@@ -128,27 +129,27 @@ void MainWindow::on_actionConvert_Movies_triggered()
     VideoProfile data = ui->cbQuality->itemData(idx).value<VideoProfile>();
     this->movieConvertThread = new MovieConvertThread(movies, data);
     connect(this->movieConvertThread
-            ,SIGNAL(finished())
-            ,this
-            ,SLOT(on_movieConverterThread_finished()));
+            , SIGNAL(finished())
+            , this
+            , SLOT(on_movieConverterThread_finished()));
     connect(this->movieConvertThread
-            ,SIGNAL(startConvert(MovieInfo))
-            ,this
-            ,SLOT(on_movieConverterThread_startConvert(MovieInfo)));
+            , SIGNAL(startConvert(MovieInfo))
+            , this
+            , SLOT(on_movieConverterThread_startConvert(MovieInfo)));
     connect(this->movieConvertThread
-            ,SIGNAL(finishedConvert(MovieInfo,bool))
-            ,this
-            ,SLOT(on_movieConverterThread_finishedConvert(MovieInfo,bool)));
+            , SIGNAL(finishedConvert(MovieInfo, bool))
+            , this
+            , SLOT(on_movieConverterThread_finishedConvert(MovieInfo, bool)));
 
 
     connect(this->movieConvertThread
-            ,SIGNAL(progressMovie(int))
-            ,ui->pbMovie
-            ,SLOT(setValue(int)));
+            , SIGNAL(progressMovie(int))
+            , ui->pbMovie
+            , SLOT(setValue(int)));
     connect(this->movieConvertThread
-            ,SIGNAL(progressOverall(int))
-            ,ui->pbTotal
-            ,SLOT(setValue(int)));
+            , SIGNAL(progressOverall(int))
+            , ui->pbTotal
+            , SLOT(setValue(int)));
     ui->pbMovie->setValue(0);
     ui->pbTotal->setValue(0);
 
@@ -156,31 +157,26 @@ void MainWindow::on_actionConvert_Movies_triggered()
     movieConvertThread->start();
 }
 
-void MainWindow::on_actionStop_Convert_triggered()
-{
+void MainWindow::on_actionStop_Convert_triggered() {
     this->movieConvertThread->stopWhenYouCan();
 }
 
-void MainWindow::on_btnSelectOutputFolder_clicked()
-{
+void MainWindow::on_btnSelectOutputFolder_clicked() {
     QFileDialog fileDlg;
     fileDlg.setOption(QFileDialog::ShowDirsOnly, true);
     fileDlg.setFileMode(QFileDialog::DirectoryOnly);
     fileDlg.setDirectory(ui->txtOutpuFolder->text());
-    if (fileDlg.exec())
-    {
+    if (fileDlg.exec()) {
         ui->txtOutpuFolder->setText(fileDlg.selectedFiles().at(0));
         AppSettings::setOutputFolder(ui->txtOutpuFolder->text());
     }
 }
 
-void MainWindow::on_txtOutpuFolder_editingFinished()
-{
+void MainWindow::on_txtOutpuFolder_editingFinished() {
     AppSettings::setOutputFolder(ui->txtOutpuFolder->text());
 }
 
-void MainWindow::on_movieConverterThread_finished()
-{
+void MainWindow::on_movieConverterThread_finished() {
     this->movieConvertThread->disconnect(this);
     delete this->movieConvertThread;
     this->movieConvertThread = NULL;
@@ -192,7 +188,7 @@ void MainWindow::on_movieConverterThread_startConvert(MovieInfo const & movieInf
     ui->statusBar->showMessage("Converting " + movieInfo.name());
     QListWidgetItem* item = getListItem(movieInfo);
     if (item) {
-        item->setForeground(QBrush(Qt::blue,Qt::SolidPattern));
+        item->setForeground(QBrush(Qt::blue, Qt::SolidPattern));
     }
 }
 
@@ -201,14 +197,13 @@ void MainWindow::on_movieConverterThread_finishedConvert(MovieInfo const & movie
     QListWidgetItem* item = getListItem(movieInfo);
     if (item) {
         if (ok)
-            item->setForeground(QBrush(Qt::green,Qt::SolidPattern));
+            item->setForeground(QBrush(Qt::green, Qt::SolidPattern));
         else
-            item->setForeground(QBrush(Qt::red,Qt::SolidPattern));
+            item->setForeground(QBrush(Qt::red, Qt::SolidPattern));
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent *event)
-{
+void MainWindow::closeEvent(QCloseEvent *event) {
     if (this->movieConvertThread != NULL) {
         this->movieConvertThread->stopWhenYouCan();
         event->ignore();
@@ -217,8 +212,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
     }
 }
 
-void MainWindow::addMovie(QString const &fileName)
-{
+void MainWindow::addMovie(QString const &fileName) {
     QListWidgetItem* item = new QListWidgetItem(fileName);
 
     MovieInfo movieInfo(fileName);
@@ -229,13 +223,11 @@ void MainWindow::addMovie(QString const &fileName)
     ui->tblMovies->addItem(item);
 }
 
-bool MainWindow::hasMovieToConvert()
-{
+bool MainWindow::hasMovieToConvert() {
     return ui->tblMovies->count() > 0;
 }
 
-void MainWindow::removeselectedMovieMovie()
-{
+void MainWindow::removeselectedMovieMovie() {
     if (m_selectedItem) {
         ui->tblMovies->removeItemWidget(m_selectedItem);
         delete m_selectedItem;
@@ -243,8 +235,7 @@ void MainWindow::removeselectedMovieMovie()
     }
 }
 
-void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
-{
+void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item) {
     ui->txtMovieInfo->setPlainText(item->data(Qt::UserRole).value<MovieInfo>().info());
     if (!movieConvertThread)
         ui->btnRemove->setEnabled(true);
@@ -252,8 +243,7 @@ void MainWindow::on_tblMovies_itemClicked(QListWidgetItem* item)
     m_selectedItem = item;
 }
 
-QListWidgetItem* MainWindow::getListItem(MovieInfo const &movieInfo)
-{
+QListWidgetItem* MainWindow::getListItem(MovieInfo const &movieInfo) {
     for (int i = 0; i < ui->tblMovies->count(); i++) {
         QListWidgetItem* item = ui->tblMovies->item(i);
         if (movieInfo.fileName() == item->data(Qt::UserRole).value<MovieInfo>().fileName()) {

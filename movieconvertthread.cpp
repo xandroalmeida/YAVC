@@ -1,3 +1,12 @@
+/*
+ * Copyright (C) 2012 Alexandro D. Almeida <alexandro@sonicit.com.br>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
 #include "movieconvertthread.h"
 #include <QString>
 #include <QDebug>
@@ -6,7 +15,7 @@
 
 #include "settings.h"
 
-int static cpuCount = 2;
+static int cpuCount = 2;
 
 #ifdef WIN32
 #include <windows.h>
@@ -21,9 +30,8 @@ static void lookupNumberOfCpu() {
 /* Hack win32 end */
 #endif
 
-MovieConvertThread::MovieConvertThread(QList<MovieInfo> const &movies, VideoProfile const &videoProfile):
-    stopPlease(false)
-{
+MovieConvertThread::MovieConvertThread(QList<MovieInfo> const &movies, VideoProfile const &videoProfile)
+    : stopPlease(false) {
 #ifdef WIN32
     lookupNumberOfCpu();
 #endif
@@ -31,8 +39,7 @@ MovieConvertThread::MovieConvertThread(QList<MovieInfo> const &movies, VideoProf
     this->m_videoProfile = videoProfile;
 }
 
-void MovieConvertThread::stopWhenYouCan()
-{
+void MovieConvertThread::stopWhenYouCan() {
     this->stopPlease = true;
 }
 
@@ -51,7 +58,7 @@ void MovieConvertThread::run() {
         QString fin = m_movies.at(i).fileName();
         QString fout = fin;
         int idx = -1;
-        if((idx = fout.lastIndexOf(".")) > -1) {
+        if ((idx = fout.lastIndexOf(".")) > -1) {
             fout = fout.left(idx+1) + m_videoProfile.extension();
         }
 
@@ -61,7 +68,7 @@ void MovieConvertThread::run() {
         QStringList args = QStringList() << "-y" << "-i" << fin;
         args << m_videoProfile.options().split(" ");
 
-        //Lets go use all the cores!
+        // Lets go use all the cores!
         if (cpuCount > 0)
             args << "-threads" << QString::number(cpuCount);
 
@@ -101,16 +108,16 @@ void MovieConvertThread::run() {
                 time += timeFields[2].toFloat();
 
                 double overall = ((overAllTime + time)/overAllTimeTotal) * 100;
-                emit progressOverall((int)overall);
+                emit progressOverall(static_cast<int>(overall));
                 qDebug() << "overAllTime=" << overAllTime << " -- " << (overAllTime + time);
 
                 time = (time/m_movies.at(i).duration()) * 100;
-                emit progressMovie((int)time);
+                emit progressMovie(static_cast<int>(time));
             }
         }
 
-        //qDebug() << proc.readAllStandardOutput();
-        //qDebug() << proc.readAllStandardError();
+        // qDebug() << proc.readAllStandardOutput();
+        // qDebug() << proc.readAllStandardError();
 
         qDebug() << "ffmpeg finished.";
         overAllTime += m_movies.at(i).duration();

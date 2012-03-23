@@ -2,3 +2,8 @@ dist
 YAVC.pro.user
 *.exe
 *.dll
+ui_*.h
+release
+debug
+*.pdb
+Makefile*

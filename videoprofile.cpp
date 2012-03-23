@@ -1,14 +1,21 @@
+/*
+ * Copyright (C) 2012 Alexandro D. Almeida <alexandro@sonicit.com.br>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
 #include "videoprofile.h"
 #include <QFile>
 #include <QDebug>
 #include <QXmlStreamReader>
 
-VideoProfile::VideoProfile()
-{
+VideoProfile::VideoProfile() {
 }
 
-QList<VideoProfile> VideoProfile::getList()
-{
+QList<VideoProfile> VideoProfile::getList() {
     QList<VideoProfile> list;
 
     QXmlStreamReader xml;
@@ -61,22 +68,18 @@ QList<VideoProfile> VideoProfile::getList()
     return list;
 }
 
-QString VideoProfile::name() const
-{
+QString VideoProfile::name() const {
     return this->m_name;
 }
 
-QString VideoProfile::options() const
-{
+QString VideoProfile::options() const {
     return this->m_options;
 }
 
-QString VideoProfile::extension() const
-{
+QString VideoProfile::extension() const {
     return this->m_extension;
 }
 
-QString VideoProfile::prefix() const
-{
+QString VideoProfile::prefix() const {
     return this->m_prefix;
 }

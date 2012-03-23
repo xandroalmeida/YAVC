@@ -1,17 +1,24 @@
+/*
+ * Copyright (C) 2012 Alexandro D. Almeida <alexandro@sonicit.com.br>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ */
+
 #include "settings.h"
 #include <QDir>
 #include <QDebug>
 
-AppSettings::AppSettings()
-{    
+AppSettings::AppSettings() {
 }
 
-AppSettings::~AppSettings()
-{
+AppSettings::~AppSettings() {
 }
 
 
-QString AppSettings::ffmpegFolder(){
+QString AppSettings::ffmpegFolder() {
 #ifndef QT_NO_DEBUG
     QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows", QSettings::NativeFormat);
     settings.beginGroup("CurrentVersion/Explorer/Shell Folders");
