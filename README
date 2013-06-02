@@ -1,1 +1,8 @@
+To build x264 you will need have yasm installed in your system.
+
+To build x264, go to x264 dir and execute
+./configure --prefix=../local --enable-static --disable-cli
+make
+make install
+
 http://ffmpeg.zeranoe.com/builds/

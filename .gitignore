@@ -7,3 +7,4 @@ release
 debug
 *.pdb
 Makefile*
+local
