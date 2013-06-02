@@ -7,7 +7,7 @@
  *
  */
 
-#include <QtGui/QApplication>
+#include <QtWidgets/QApplication>
 #include <QSettings>
 #include <QDebug>
 
