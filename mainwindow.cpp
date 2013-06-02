@@ -45,6 +45,11 @@ MainWindow::MainWindow(QWidget *parent)
     this->movieConvertThread = NULL;
 
     this->ui->tblMovies->model();
+
+    QRect g = AppSettings::windowGeometry();
+    if (!g.isNull()) {
+        this->setGeometry(g);
+    }
 }
 
 MainWindow::~MainWindow() {
@@ -204,12 +209,16 @@ void MainWindow::on_movieConverterThread_finishedConvert(MovieInfo const & movie
 }
 
 void MainWindow::closeEvent(QCloseEvent *event) {
+    QRect  wGeometry = this->geometry();
+    AppSettings::setWindowGeometry(wGeometry);
+
     if (this->movieConvertThread != NULL) {
         this->movieConvertThread->stopWhenYouCan();
         event->ignore();
     } else {
         event->accept();
     }
+
 }
 
 void MainWindow::addMovie(QString const &fileName) {

@@ -10,6 +10,8 @@
 #include "settings.h"
 #include <QDir>
 #include <QDebug>
+#include <QRect>
+
 
 AppSettings::AppSettings() {
 }
@@ -79,6 +81,18 @@ QString AppSettings::defaultVideoQuality() {
 void AppSettings::setDefaultVideoQuality(const QString &value) {
     QSettings m_settings;
     m_settings.setValue("defaultVideoQuality", QVariant(value));
+    m_settings.sync();
+}
+
+QRect AppSettings::windowGeometry() {
+    QSettings m_settings;
+    QRect ret = m_settings.value("windowSize").value<QRect>();
+    return ret;
+}
+
+void AppSettings::setWindowGeometry(const QRect &value) {
+    QSettings m_settings;
+    m_settings.setValue("windowSize", QVariant(value));
     m_settings.sync();
 }
 

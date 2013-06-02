@@ -29,6 +29,11 @@ class AppSettings {
 
     static QString defaultVideoQuality();
     static void setDefaultVideoQuality(const QString &value);
+
+    static QRect windowGeometry();
+    static void setWindowGeometry(const QRect &value);
+
+
 };
 
 #endif  // SETTINGS_H_
