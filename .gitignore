@@ -8,3 +8,4 @@ debug
 *.pdb
 Makefile*
 local
+lame*

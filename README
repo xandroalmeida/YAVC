@@ -1,8 +1,17 @@
-To build x264 you will need have yasm installed in your system.
+Building libmp3lame
+get -O - "http://downloads.sourceforge.net/project/lame/lame/3.99/lame-3.99.5.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Flame%2Ffiles%2Flame%2F3.99%2F&ts=1370180640&use_mirror=ufpr" | tar xvzf -
+cd lame-3.99.5
+./configure --prefix=<YAVC_SRC_PATH>/local --disable-frontend --disable-shared
+make && make install
+
+You will need have yasm installed in your system.
 
 To build x264, go to x264 dir and execute
-./configure --prefix=../local --enable-static --disable-cli
-make
-make install
+./configure --prefix=../local --enable-static --disable-cli --disable-opencl
+make && make install
+
+To build libav
+CFLAGS=-I../local/include LDFLAGS=-L../local/lib ./configure --prefix=../local --enable-gpl --disable-avplay --disable-avserver --disable-doc --disable-network --enable-libx264 --enable-libmp3lame --disable-debug --disable-shared
+make && make install
 
 http://ffmpeg.zeranoe.com/builds/
